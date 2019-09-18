@@ -9,7 +9,7 @@ _Echadle un ojo que es muy interesante saber usar esta característica_. **OJO!*
 - Los documentos, para que sean más faciles de hacer entre todos estarán en [Drive](https://drive.google.com/drive/folders/11TI6JH4CGTRb-80Cpk__9QrWz_RezDju?usp=sharing). Aún así, los documentos finales en versión _PDF_ seguramente si los subamos a git.
 - El repositorio tiene que estar **bien estructurado** con sus carpetas y subcarpetas (tantas como sea necesario)
 - Por si es necesario, [aquí](https://www.markdownguide.org/) teneis una guía de Markdown (los .md).
-- **Si alguien está trabajando en un issue, se lo tiene que asignar** (barra lateral derecha, asignar).
+- **Si alguien está trabajando en un issue, se lo tiene que asignar** (barra lateral derecha, asignar) además en el board del proyecto, tiene que mover la tarjeta de _TODO_ a _IN PROGRESS_.
 
 ### Cómo crear Issues
 _Aunque Víctor intentará ser el que cree todos los issues, puede darse el caso de que el resto necesite crear un issue. Si es así, seguid las instrucciones de aquí._
@@ -48,3 +48,6 @@ Se pueden tener tantas ramas a la vez como se desee.
 Para que sea más facil ver en el terminal en que rama estáis, podéis hacer lo que dice [este gist](https://gist.github.com/VictorNS69/f86527dd094fac13466b61527338438b) que hice yo. Despues de hacerlo, tenéis que hacer `source ~/.bashrc`.
 
 También, para saber en que rama estás trabajando sin hacer lo que dice el gist, en el terminal escribid `git branch`.
+
+## ESTE DOCUMENTO NO ES LA LEY. SI NO SE HACE ALGO COMO PONE AQUÍ, NO PASA NADA. EL DOCUMENTO EXPLICA LO MÁS RECOMENDABLE.
+
