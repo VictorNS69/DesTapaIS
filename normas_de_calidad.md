@@ -32,7 +32,8 @@ Básicamente **hay que hacer lo mismo que en la creación de issues**, salvo que
 **NOTA:** No sé si es obligatorio que Víctor haga revisión para poder mergear
 
 Una vez cerrada y mergeada la PR, **la rama se borrará automáticamente**.
-
+### Cerrar issues
+Como he mencionado antes, la mejor manera para que todo funcione correctamente es añadir en el mensaje de commit alguna palabra clave de [aquí](https://help.github.com/en/articles/closing-issues-using-keywords). Pero si por algún motivo no se ha hecho así, o no hay commit que cierre esa issue, se puede cerrar de manera manual desde la pestaña issues.
 ### Cómo trabajar con ramas
 Podéis crear la rama de dos maneras. 
 
