@@ -2,18 +2,21 @@
 
 import sqlite3
 import os
+import inspect
 
-if os.path.exists("../DesTapaIS.db"):
-    os.remove("../DesTapaIS.db")
+
+script_path = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+db_path = script_path + "/../DesTapaIS.db"
+
+if os.path.exists(db_path):
+    os.remove(db_path)
     print("La base de datos (DB) ha sido borrada con exito")
 
-conn = sqlite3.connect('../DesTapaIS.db')
+conn = sqlite3.connect(db_path)
 c = conn.cursor()
 
-""" 
-Esta linea se debe escribir por cada conexion para tener en cuenta las 
-FOREIGN KEYs.
-"""
+"""Esta linea se debe escribir por cada conexion para tener en cuenta las 
+FOREIGN KEYs."""
 c.execute('''PRAGMA foreign_keys = ON;''')
 
 c.execute('''CREATE TABLE Usuario
