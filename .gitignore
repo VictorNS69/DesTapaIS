@@ -1,3 +1,7 @@
 # Aquí se añaden todos los archivos que se desean ignorar
 
+# Cosas de pycharm
 .idea/
+
+# DB
+DesTapaIS.db
