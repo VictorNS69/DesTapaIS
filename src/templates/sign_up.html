@@ -1,0 +1,57 @@
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<!------ Include the above in your HEAD tag ---------->
+
+<div class="container">
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 well well-sm">
+            <legend><a href=""><i class="glyphicon glyphicon-globe"></i></a> Sign up!</legend>
+            <form action="" method="POST">
+            <input class="form-control" name="username" placeholder="Your Username" type="text" required autofocus />
+            <div class="row">
+                <div class="col-xs-6 col-md-6">
+                    <input class="form-control" name="firstname" placeholder="First Name" type="text"/>
+                </div>
+                <div class="col-xs-6 col-md-6">
+                    <input class="form-control" name="lastname" placeholder="Last Name" type="text" />
+                </div>
+            </div>
+            <input class="form-control" name="email" placeholder="Your Email" type="email" required />
+            <input class="form-control" name="password" placeholder="New Password" type="password" required/>
+            <input class="form-control" name="confirm_password" placeholder="Confirm Password" type="password" required/>
+            <label for="">
+                Birth Date</label>
+            <div class="row">
+                <div class="col-xs-4 col-md-4">
+                    <select class="form-control">
+                        <option value="Month">Month</option>
+                    </select>
+                </div>
+                <div class="col-xs-4 col-md-4">
+                    <select class="form-control">
+                        <option value="Day">Day </option>
+                    </select>
+                </div>
+                <div class="col-xs-4 col-md-4">
+                    <select class="form-control">
+                        <option value="Year">Year</option>
+                    </select>
+                </div>
+            </div>
+            <label class="radio-inline">
+                <input type="radio" name="sex" id="inlineCheckbox1" value="male" />
+                Male
+            </label>
+            <label class="radio-inline">
+                <input type="radio" name="sex" id="inlineCheckbox2" value="female" />
+                Female
+            </label>
+            <br />
+            <br />
+            <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">
+                Sign up</button>
+            </form>
+        </div>
+    </div>
+</div>
