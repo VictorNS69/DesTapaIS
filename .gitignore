@@ -5,3 +5,6 @@
 
 # DB
 DesTapaIS.db
+
+# Pycache
+*__pycache__/
