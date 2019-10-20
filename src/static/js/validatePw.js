@@ -1,11 +1,9 @@
-alert("This is from JavaScript");
-
-var password = document.getElementById("password")
-  , confirm_password = document.getElementById("confirm_password");
+let password = document.getElementById("password");
+let confirm_password = document.getElementById("confirm_password");
 
 function validatePassword(){
   if(password.value != confirm_password.value) {
-    confirm_password.setCustomValidity("Passwords Don't Match");
+    confirm_password.setCustomValidity("Las contraseñas no coinciden");
   } else {
     confirm_password.setCustomValidity('');
   }

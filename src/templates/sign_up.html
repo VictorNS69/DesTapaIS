@@ -20,20 +20,7 @@
             <input class="form-control" name="email" placeholder="Your Email" type="email" required />
             <input class="form-control" id="password" name="password" placeholder="New Password" type="password" required/>
             <input class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password" type="password" required/>
-            <!-- Quitar este script y meterlo en js/validatePw.js-->
-            <script> type="text/javascript"
-                let password = document.getElementById("password"), confirm_password = document.getElementById("confirm_password");
-                function validatePassword(){
-                  if(password.value != confirm_password.value) {
-                    confirm_password.setCustomValidity("Las contraseñas no coinciden");
-                  } else {
-                    confirm_password.setCustomValidity('');
-                  }
-                }
-                password.onchange = validatePassword;
-                confirm_password.onkeyup = validatePassword;
-            </script>
-
+            <script src="{{ url_for('static', filename='js/validatePw.js') }}"></script>
             <label for="">
                 Birth Date</label>
             <div class="row">
