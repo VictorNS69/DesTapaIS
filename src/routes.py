@@ -16,8 +16,7 @@ def main():
             date = functions.date_validator(str(details["date"]).replace("/", "-"))
             if not date:
                 print("Edad mal")
-                # TODO: return HTML menor de edad
-                return "Edad mal"
+                return render_template('age_error.html')
             else:
                 print("Edad bien")
 
@@ -33,11 +32,10 @@ def main():
                     # TODO: return HTML menú
                     return "success"
                 except sqlite3.IntegrityError:
-                    print("El usuario ya existe o datos invalidos")
-                    # TODO: return HTML ya existes
-                    return "usuario ya existe"
+                    return render_template('error_sign_in.html', name=details["username"], email=details["email"])
                 except sqlite3.OperationalError:
                     print("DB bloqueada")
-                    return "DB bloqueada"
+                    return "Error 503 Service Unavailable.\nPleas try again later"
 
     return render_template('sign_up.html')
+
