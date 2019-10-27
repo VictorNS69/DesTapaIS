@@ -1,6 +1,4 @@
 from src import app, DB_PATH, functions
-import src.lib as lib
-
 from flask import render_template, request
 import sqlite3
 
@@ -19,12 +17,14 @@ def main():
             if not date:
                 print("Edad mal")
                 # TODO: return HTML menor de edad
-                return "edad mal"
+                return "Edad mal"
             else:
                 print("Edad bien")
-                query = "INSERT INTO Usuario(username, contrasena, email, fecha_nacimiento) VALUES ('{}', '{}', '{}', '{}');"\
+
+                query = "INSERT INTO Usuario(username, contrasena, email, fecha_nacimiento) " \
+                        "VALUES ('{}', '{}', '{}', '{}');"\
                     .format(details["username"], hash(details["password"]), details["email"], str(details["date"]))
-                print("Query:\t", str(query))  # -- Por terminal
+                print("Query:\t", str(query))
                 try:
                     c.execute(str(query))
                     conn.commit()
@@ -39,4 +39,5 @@ def main():
                 except sqlite3.OperationalError:
                     print("DB bloqueada")
                     return "DB bloqueada"
+
     return render_template('sign_up.html')
