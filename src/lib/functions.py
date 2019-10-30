@@ -11,4 +11,4 @@ def date_validator(date):
     d2 = datetime.datetime.strptime(today, "%Y-%m-%d")
     d1 = datetime.datetime.strptime(date, "%Y-%m-%d")
     sub = abs((d1 - d2).days)
-    return False if d1 > d2 or sub < 365*8 else True
+    return False if d1 > d2 or sub < 365*18 else True
