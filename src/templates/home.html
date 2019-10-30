@@ -1,0 +1,28 @@
+
+<div align="center">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <img src ="{{ url_for('static', filename='images/Logo_DesTapaIS_fondo.png') }}"
+         alt = "DesTapaIS Logo" height="250" width="250" />
+    <div class="jumbotron" >
+      <h1 class="display-4">Iniciar sesión</h1>
+      <p class="lead">Para usuarios ya registrados</p>
+      <hr class="my-4">
+      <a class="btn btn-primary btn-lg" href="login" role="button">Iniciar sesión</a>
+    </div>
+    <div class="jumbotron">
+      <h1 class="display-4">Registrarse</h1>
+      <p class="lead">Para usuarios nuevos</p>
+      <hr class="my-4">
+      <p>El proceso de registro es rápido y sencillo!</p>
+      <a class="btn btn-primary btn-lg" href="sign_in" role="button">Registrarse</a>
+    </div>
+</div>
+<style>
+        body{
+        background-image: url("{{ url_for('static', filename='images/wallpaper_comida.jpg') }}");
+     }
+     .jumbotron {
+        background: rgba(204, 204, 204, 0.55)
+    }
+</style>
