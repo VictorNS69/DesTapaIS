@@ -15,30 +15,31 @@ def sign_in():
             c = conn.cursor()
             c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
             details = request.form
-            # TODO: Añadir todos los valores
             date = functions.date_validator(str(details["date"]).replace("/", "-"))
             if not date:
-                print("Edad mal")
                 return render_template('age_error.html')
             else:
-                print("edad-- ", date)
-                print("Edad bien")
+                image = request.files["image"]
+                blob = image.read()
+                verified = 1  # TODO: elimiar verificado hardcoded cuando se tenga verificacion por correo
 
-                query = "INSERT INTO Usuario(username, contrasena, email, fecha_nacimiento) " \
-                        "VALUES ('{}', '{}', '{}', '{}');"\
-                    .format(details["username"], hash(details["password"]), details["email"], str(details["date"]))
-                print("Query:\t", str(query))
+                query = "INSERT INTO 'Usuario' ('username', 'contrasena', 'email', 'fecha_nacimiento', nombre," \
+                        "'apellidos', 'pais', 'descripcion', 'genero', 'verificado', 'foto') VALUES (?, ?, ?, ?, ?, " \
+                        "?, ? , ?, ?, ?, ?)"
+                data_tuple = (details["username"], hash(details["password"]), details["email"], str(details["date"]),
+                              details["firstname"], details["lastname"], details["country"], details["description"],
+                              details["sex"], verified, blob)
                 try:
-                    c.execute(str(query))
+                    c.execute(query, data_tuple)
                     conn.commit()
-                    print("Añadido a la DB")
                     # TODO: return HTML mira tu correo para validar
-                    # TODO: return HTML menú principal
-                    return "success"
-                except sqlite3.IntegrityError:
+                    # TODO: return HTML menú principal ha de ser la ruta /login
+                    render_template('login.html')
+                except sqlite3.IntegrityError as e:
+                    print("Error:", e)
                     return render_template('error_sign_in.html', name=details["username"], email=details["email"])
-                except sqlite3.OperationalError:
-                    print("DB bloqueada")
+                except sqlite3.OperationalError as e:
+                    print("Error:", e)
                     return "Error 503 Service Unavailable.\nPlease try again later"
 
     return render_template('sign_up.html')
