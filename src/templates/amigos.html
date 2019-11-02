@@ -1,0 +1,31 @@
+<title>Amigos</title>
+
+<div class="wrapper">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <img src ="{{ url_for('static', filename='images/Logo_DesTapaIS_fondo.png') }}"
+         alt = "DesTapaIS Logo" height="250" width="250" />
+    <span class="boton">
+        <a class="btn btn-primary btn-lg btn-block" href="panel_amigos" role="button">Panel degustaciones</a>
+        <a class="btn btn-primary btn-lg btn-block" href="resumen_amigos" role="button">Resumen amigos</a>
+        <a class="btn btn-primary btn-lg btn-block" href="nuevo_amigo" role="button">Añadir amigo</a>
+        <a class="btn btn-primary btn-lg btn-block" href="peticiones" role="button">Peticiones de amistad</a>
+    </span>
+</div>
+<style>
+    body{
+        background-image: url("{{ url_for('static', filename='images/wallpaper_oscuro.jpg') }}");
+    }
+    .wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+     }
+    .boton {
+        display: table-cell;
+        position: absolute;
+        top:50%;
+        transform: translateY(-50%);
+     }
+</style>

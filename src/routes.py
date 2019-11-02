@@ -44,3 +44,7 @@ def sign_in():
 
     return render_template('sign_up.html')
 
+@app.route('/<id>/amigos', methods=['GET', 'POST'])
+def amigos(id):
+    return render_template('amigos.html')
+
