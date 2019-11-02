@@ -5,7 +5,7 @@ import sqlite3
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
+    return render_template('init.html')
 
 
 @app.route('/sign_in', methods=['GET', 'POST'])
@@ -33,8 +33,8 @@ def sign_in():
                     c.execute(query, data_tuple)
                     conn.commit()
                     # TODO: return HTML mira tu correo para validar
-                    # TODO: return HTML menú principal ha de ser la ruta /login
-                    render_template('login.html')
+                    # TODO: return HTML menú principal ha de ser la ruta /main_menu
+                    render_template('main_menu.html')
                 except sqlite3.IntegrityError as e:
                     print("Error:", e)
                     return render_template('error_sign_in.html', name=details["username"], email=details["email"])
@@ -43,4 +43,10 @@ def sign_in():
                     return "Error 503 Service Unavailable.\nPlease try again later"
 
     return render_template('sign_up.html')
+
+
+@app.route('/home', methods=['GET', 'POST'])
+def main():
+    return render_template('base.html')
+
 
