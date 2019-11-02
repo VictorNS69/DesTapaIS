@@ -5,7 +5,7 @@ import sqlite3
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
+    return render_template('init.html')
 
 
 @app.route('/sign_in', methods=['GET', 'POST'])
