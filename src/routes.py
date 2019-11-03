@@ -44,3 +44,17 @@ def sign_in():
 
     return render_template('sign_up.html')
 
+@app.route('/<username>/edit_profile', methods=['GET','POST'])
+def edit_profile(username):
+    if request.method == 'GET':
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            cursor = conn.cursor
+            query = "SELECT * FROM 'Usuario' WHERE username=?"
+            cursor = conn.execute(query,[username])
+            data = cursor.fetchone()
+            return render_template('edit_profile.html', username = data["username"], name = data["nombre"],
+            last_name = data["apellidos"], email = data["email"], password = data["contrasena"],
+            description = data["descripcion"], birthdate = data["fecha_nacimiento"] )
+
+
