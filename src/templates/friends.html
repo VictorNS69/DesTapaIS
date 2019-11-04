@@ -1,0 +1,20 @@
+<title>Friends</title>
+
+<div class="wrapper">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+          integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <img src ="{{ url_for('static', filename='images/Logo_DesTapaIS_fondo.png') }}"
+         alt = "DesTapaIS Logo" height="250" width="250" />
+    <span class="boton">
+        <a class="btn btn-primary btn-lg btn-block" href="friends_panel" role="button">Friends panel</a>
+        <a class="btn btn-primary btn-lg btn-block" href="friends_summary" role="button">Friends summary</a>
+        <a class="btn btn-primary btn-lg btn-block" href="new_friend" role="button">Add friend</a>
+        <a class="btn btn-primary btn-lg btn-block" href="requests" role="button">Friend requests</a>
+    </span>
+</div>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/center.css') }}">
+<style>
+    body{
+        background-image: url("{{ url_for('static', filename='images/wallpaper_oscuro.jpg') }}");
+    }
+</style>

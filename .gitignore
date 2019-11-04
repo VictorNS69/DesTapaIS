@@ -2,6 +2,7 @@
 
 # Cosas de pycharm
 .idea/
+*.pyc
 
 # DB
 DesTapaIS.db
