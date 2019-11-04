@@ -12,20 +12,9 @@
         <a class="btn btn-primary btn-lg btn-block" href="requests" role="button">Friend requests</a>
     </span>
 </div>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/center.css') }}">
 <style>
     body{
         background-image: url("{{ url_for('static', filename='images/wallpaper_oscuro.jpg') }}");
     }
-    .wrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-     }
-    .boton {
-        display: table-cell;
-        position: absolute;
-        top:50%;
-        transform: translateY(-50%);
-     }
 </style>
