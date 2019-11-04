@@ -46,7 +46,7 @@ def sign_in():
     return render_template('sign_up.html')
 
 
-@app.route('/<string:username>/homepage/resume', methods=['GET'])
+@app.route('/<string:username>/resume', methods=['GET'])
 def resume(username):
     try:
         with sqlite3.connect(DB_PATH) as conn:
@@ -71,7 +71,7 @@ def homepage(username):
 
 
 
-@app.route('/<string:username>/homepage/profile', methods=['GET'])
+@app.route('/<string:username>/profile', methods=['GET'])
 def profile(username):
     try:
         with sqlite3.connect(DB_PATH) as conn:
