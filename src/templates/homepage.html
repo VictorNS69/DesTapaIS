@@ -1,0 +1,20 @@
+<html>
+<title>DesTapaISHome</title>
+<head>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/hp.css') }}"/>
+</head>
+<body >
+<div class="container">
+        <button type="button" class="block"> Degustaciones más valoradas</button>
+        <button type="button" class="block"> Obtener Ayuda</button>
+        <button type="button" class="block" onclick="location.href='/{{username}}/homepage/profile';"> Perfil personal</button>
+        <button type="button" class="block" onclick="location.href='/{{username}}/homepage/resume';">Información del perfil y estadísticas</button>
+        <button type="button" class="block"> Amigos</button>
+        <button type="button" class="block"> Dar favorito/añadir local</button>
+        <button type="button" class="block"> Valorar/dar de alta desgustaciones</button>
+        <button type="button" class="block"> Notificación de bugs o realizar comentarios</button>
+
+</div>
+
+</body>
+</html>

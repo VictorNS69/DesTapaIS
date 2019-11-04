@@ -5,7 +5,7 @@ import sqlite3
 
 @app.route('/', methods=['GET', 'POST'])
 def home():
-    return render_template('home.html')
+    return render_template('init.html')
 
 
 @app.route('/sign_in', methods=['GET', 'POST'])
@@ -32,6 +32,7 @@ def sign_in():
                 try:
                     c.execute(query, data_tuple)
                     conn.commit()
+                    conn.close()
                     # TODO: return HTML mira tu correo para validar
                     # TODO: return HTML menú principal ha de ser la ruta /login
                     render_template('login.html')
@@ -44,3 +45,46 @@ def sign_in():
 
     return render_template('sign_up.html')
 
+
+@app.route('/<string:username>/homepage/resume', methods=['GET'])
+def resume(username):
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+            query = "SELECT * FROM Usuario WHERE username = ? "
+            c.execute(query, (username,))
+            conn.commit()
+            result = c.fetchone()
+
+    except sqlite3.OperationalError as e:
+        print("Error:", e)
+        return "Error 503 Service Unavailable.\nPlease try again later"
+
+    return render_template('resume.html', result=result)
+
+
+@app.route('/<string:username>/homepage')
+def homepage(username):
+    return render_template('homepage.html',username=username)
+
+
+
+@app.route('/<string:username>/homepage/profile', methods=['GET'])
+def profile(username):
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+            query = "SELECT * FROM Usuario WHERE username = ? "
+            c.execute(query, (username,))
+            conn.commit()
+            result = c.fetchone()
+
+    except sqlite3.OperationalError as e:
+        print("Error:", e)
+        return "Error 503 Service Unavailable.\nPlease try again later"
+
+    return render_template('profile.html', result=result)

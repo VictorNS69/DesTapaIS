@@ -1,0 +1,36 @@
+<html>
+<title>Title</title>
+<head>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/resume.css') }}"/>
+</head>
+<body>
+<div>
+    <img src ="{{ url_for('static', filename='images/Logo_DesTapaIS_fondo.png') }}"
+         alt = "DesTapaIS Logo" height="250" width="250" />
+</div>
+<div class="profile_box">
+    <div class="profilepic">
+         <img src ="{{ url_for('static', filename='images/avatar.jpg') }}"
+         alt = "avatar" height="300" width="250" />
+    </div>
+    <div class="coverpad">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+              integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+              crossorigin="anonymous">
+        <br>
+        <h1 class="display-4" style="text-align:center;">Información Personal</h1>
+        <hr class="my-4">
+        <p class="lead" style="padding-left:30px; text-align:left">Nombre: {{result["nombre"]}} </p>
+        <p class="lead" style="padding-left:30px; text-align:left">Apellidos: {{result["apellidos"]}}</p>
+        <p class="lead" style="padding-left:30px; text-align:left">Fecha de Nacimiento: {{result["fecha_nacimiento"]}}</p>
+        <p class="lead" style="padding-left:30px; text-align:left">Género: {{result["genero"]}}</p>
+        <p class="lead" style="padding-left:30px; text-align:left">Descripción: {{result["descripcion"]}}</p>
+        <hr class="my-4">
+        <p class="lead" style="padding-left:30px; text-align:left">Email: {{result["email"]}}</p>
+        <p class="lead" style="padding-left:30px; text-align:left">Contraseña: {{result["contrasena"]}}</p>
+        <hr class="my-4">
+    </div>
+</div>
+</div>
+</body>
+</html>
