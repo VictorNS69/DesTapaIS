@@ -44,9 +44,12 @@ def sign_in():
 
     return render_template('sign_up.html')
 
-
+"""
 @app.route('/home', methods=['GET', 'POST'])
 def main():
     return render_template('base.html')
+"""
 
-
+@app.route('/<string:username>/home')
+def homepage(username):
+    return render_template('homepage.html', username=username)
