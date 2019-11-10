@@ -1,5 +1,5 @@
 from src import app, DB_PATH, functions
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 import sqlite3
 
 
@@ -7,6 +7,11 @@ import sqlite3
 def home():
     return render_template('init.html')
 
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    # TODO: hacer login
+    return render_template('login.html')
 
 @app.route('/sign_in', methods=['GET', 'POST'])
 def sign_in():
@@ -33,8 +38,7 @@ def sign_in():
                     c.execute(query, data_tuple)
                     conn.commit()
                     # TODO: return HTML mira tu correo para validar
-                    # TODO: return HTML menú principal ha de ser la ruta /main_menu
-                    render_template('main_menu.html')
+                    return redirect(url_for('homepage', username=details["username"]) )
                 except sqlite3.IntegrityError as e:
                     print("Error:", e)
                     return render_template('error_sign_in.html', name=details["username"], email=details["email"])
@@ -43,12 +47,6 @@ def sign_in():
                     return "Error 503 Service Unavailable.\nPlease try again later"
 
     return render_template('sign_up.html')
-
-"""
-@app.route('/home', methods=['GET', 'POST'])
-def main():
-    return render_template('base.html')
-"""
 
 @app.route('/<string:username>/home')
 def homepage(username):

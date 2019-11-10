@@ -1,3 +1,9 @@
+{% extends "base.html" %}
+{% block navbar %}
+{{super()}}
+<div style="visibility: hidden">
+    {% block user %}{{username}}{% endblock %}
+</div>
 <html>
 <title>DesTapaISHome</title>
 <head>
@@ -12,6 +18,6 @@
         <button type="button" class="block"> Dar favorito/añadir local</button>
         <button type="button" class="block"> Valorar/dar de alta desgustaciones</button>
 </div>
-
 </body>
 </html>
+{% endblock %}
