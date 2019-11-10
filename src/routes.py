@@ -10,7 +10,28 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
-    # TODO: hacer login
+    if request.method == "POST":
+        with sqlite3.connect(DB_PATH) as conn:
+            c = conn.cursor()
+            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+            details = request.form
+            print(details)
+            query = "SELECT * FROM Usuario WHERE 'username'={} AND 'password'={};".format(details["username"],  hash(details["password"]))
+            print(query)
+            try:
+                c.execute(query, data_tuple)
+                conn.commit()
+                result = c.fetchone()
+                print("result", result)
+                if result is None:
+                    return "Usuario no existe TODO" # TODO
+                return redirect(url_for('homepage', username=details["username"]) )
+            except sqlite3.IntegrityError as e:
+                print("Error:", e)
+                return e#render_template('error_sign_in.html', name=details["username"], email=details["email"])
+            except sqlite3.OperationalError as e:
+                print("Error:", e)
+                return e#"Error 503 Service Unavailable.\nPlease try again later"
     return render_template('login.html')
 
 @app.route('/sign_in', methods=['GET', 'POST'])
