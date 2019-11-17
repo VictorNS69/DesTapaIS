@@ -1,12 +1,12 @@
 <link rel="stylesheet" href="{{ url_for('static', filename='css/user_already_exist.scss') }}">
 
-<title>Parece que estos datos ya existen</title>
+<title>Error</title>
 
 <div class="wrapper">
   <h1>Hmm...</h1>
-  <p>Parece que <b>{{name}} </b> o <b>{{email}}</b> ya está registrado en nuestro sistema</p>
+  <p>Looks like <b>{{name}} </b> or <b>{{email}}</b> are already in use</p>
   <div class="buttons"><a href="/sign_in">back</a>
-      <span>Utiliza otro nombre de usuario o email</span></div>
+      <span>Please use another username or email</span></div>
 </div>
 <div class="space">
   <div class="blackhole"></div>

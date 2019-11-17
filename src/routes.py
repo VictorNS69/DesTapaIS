@@ -5,7 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 @app.route('/', methods=['GET', 'POST'])
-def home():
+def init():
     return render_template('init.html')
 
 
@@ -78,3 +78,9 @@ def sign_in():
 @app.route('/<string:username>/home')
 def homepage(username):
     return render_template('homepage.html', username=username)
+
+
+@app.route('/<username>/friends', methods=['GET', 'POST'])
+def amigos(username):
+    return render_template('friends.html')
+
