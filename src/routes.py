@@ -1,6 +1,6 @@
+import sqlite3
 from src import app, DB_PATH, functions
 from flask import render_template, request, redirect, url_for
-import sqlite3
 from werkzeug.security import generate_password_hash, check_password_hash
 
 
@@ -22,18 +22,20 @@ def login():
                 result = c.fetchone()
                 print("result", result)
                 if result is None:
-                    return "Usuario no existe TODO"  # TODO
+                    return render_template("user_not_exist.html")
                 check = check_password_hash(result[2], details["password"])
                 if check:
                     return redirect(url_for('homepage', username=details["username"]))
                 else:
-                    return "PW NO CASA" # TODO
+                    return render_template("wrong_pw.html")
+
             except sqlite3.IntegrityError as e:
                 print("Error:", e)
                 return e  # render_template('error_sign_in.html', name=details["username"], email=details["email"])
             except sqlite3.OperationalError as e:
                 print("Error:", e)
                 return e  # "Error 503 Service Unavailable.\nPlease try again later"
+
     return render_template('login.html')
 
 
@@ -44,7 +46,6 @@ def sign_in():
             c = conn.cursor()
             c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
             details = request.form
-            print("Details:", details)
             date = functions.date_validator(str(details["date"]).replace("/", "-"))
             if not date:
                 return render_template('age_error.html')
@@ -63,7 +64,7 @@ def sign_in():
                     c.execute(query, data_tuple)
                     conn.commit()
                     # TODO: return HTML mira tu correo para validar
-                    return redirect(url_for('homepage', username=details["username"]) )
+                    return redirect(url_for('homepage', username=details["username"]))
                 except sqlite3.IntegrityError as e:
                     print("Error:", e)
                     return render_template('error_sign_in.html', name=details["username"], email=details["email"])
