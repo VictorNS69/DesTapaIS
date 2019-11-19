@@ -67,7 +67,7 @@ def resume(username):
 
 @app.route('/<string:username>/homepage')
 def homepage(username):
-    return render_template('homepage.html',username=username)
+    return render_template('register_local.html',username=username)
 
 
 
