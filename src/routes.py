@@ -67,7 +67,7 @@ def resume(username):
 
 @app.route('/<string:username>/homepage')
 def homepage(username):
-    return render_template('register_local.html',username=username)
+    return render_template('homepage.html',username=username)
 
 
 
@@ -88,3 +88,22 @@ def profile(username):
         return "Error 503 Service Unavailable.\nPlease try again later"
 
     return render_template('profile.html', result=result)
+
+
+@app.route('/<string:username>/homepage/<string:local>', methods=['GET'])
+def local(local):
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+            query = "SELECT * FROM Local WHERE nombre = ? "
+            c.execute(query, (local,))
+            conn.commit()
+            result = c.fetchone()
+
+    except sqlite3.OperationalError as e:
+        print("Error:", e)
+        return "Error 503 Service Unavailable.\nPlease try again later"
+
+    return render_template('local.html', result=result);

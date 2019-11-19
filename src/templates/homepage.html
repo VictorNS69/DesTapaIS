@@ -10,15 +10,53 @@
     <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/hp.css') }}"/>
 </head>
 <body >
-<div class="container">
-        <button type="button" class="block"> Most rated tastings</button>
-        <button type="button" class="block" onclick="location.href='/{{username}}/homepage/profile';"> Personal profile</button>
-        <button type="button" class="block" onclick="location.href='/{{username}}/homepage/resume';"> Profile info and stats</button>
-        <button type="button" class="block"> Friends</button>
-        <button type="button" class="block"> Make favorite/add local</button>
-        <button type="button" class="block"> Rate/register tasting</button>
+<div id="contenedor">
+    <input id="tab-1" type="radio" name="radio-set" class="tab-selector-1" checked="checked" />
+    <label for="tab-1" class="tab-label-1">Actividades recientes</label>
+
+    <input id="tab-2" type="radio" name="radio-set" class="tab-selector-2" />
+    <label for="tab-2" class="tab-label-2">Resumen de perfil</label>
+
+    <input id="tab-3" type="radio" name="radio-set" class="tab-selector-3" />
+    <label for="tab-3" class="tab-label-3">Comidas y locales favoritos</label>
+
+    <input id="tab-4" type="radio" name="radio-set" class="tab-selector-4" />
+    <label for="tab-4" class="tab-label-4">Últimos Galardones</label>
+
+    <input id="tab-5" type="radio" name="radio-set" class="tab-selector-5" />
+    <label for="tab-5" class="tab-label-5">Fotos de degustaciones</label>
+
+    <input id="tab-6" type="radio" name="radio-set" class="tab-selector-6" />
+    <label for="tab-6" class="tab-label-6">Amigos agregados</label>
+
+    <input id="tab-7" type="radio" name="radio-set" class="tab-selector-7" />
+    <label for="tab-7" class="tab-label-7">Locales favoritos</label>
+
+    <div class="content">
+        <div class="content-1">
+            Contenido1
+        </div>
+        <div class="content-2">
+            Contenido2
+        </div>
+        <div class="content-3">
+            Contenido3
+        </div>
+        <div class="content-4">
+            Contenido4
+        </div>
+        <div class="content-5">
+            Contenido5
+        </div>
+        <div class="content-6">
+            Contenido6
+        </div>
+        <div class="content-7">
+            Contenido7
+        </div>
+    </div>
 </div>
 </body>
 </html>
-{% endblock %}
 
+{% endblock %}
