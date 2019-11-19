@@ -1,0 +1,42 @@
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+
+<!------ Include the above in your HEAD tag ---------->
+<title>DesTapaIS: Registro Local</title>
+
+<div class="container" >
+    <img src ="{{ url_for('static', filename='images/Logo_DesTapaIS_fondo.png') }}"
+         alt = "DesTapaIS Logo" height="300" width="300" />
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 well well-sm">
+            <legend align="center">Registra un nuevo Local!</legend>
+
+            <form action="" method="POST"  enctype="multipart/form-data">
+                <input class="form-control" name="name" placeholder="Local Name" type="text" required autofocus/>
+                <input class="form-control" name="address" placeholder="Address" type="text"/>
+                <script src="{{ url_for('static', filename='js/validatePw.js') }}"></script>
+
+                <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css"
+                      rel="stylesheet">
+                <link rel="stylesheet" type="text/css" media="screen"
+                      href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+                <p></p>
+                <textarea id="description" name="description" rows="4" cols="200" placeholder="Local Review"></textarea>
+                <p></p>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">
+                    Register local
+                </button>
+                <div class="buttons"><a href="/login">Cancelar</a></div>
+            </form>
+        </div>
+    </div>
+</div>
+<style>
+   body{
+        background-image: url("{{ url_for('static', filename='images/wallpaper_spag.jpg') }}");
+        display:block;
+          margin-left: auto;
+        margin-right: auto;
+    }
+</style>
