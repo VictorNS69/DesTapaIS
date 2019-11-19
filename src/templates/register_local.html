@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {% block navbar %}
 {{super()}}
-<html>
 <div style="visibility: hidden">
     {% block user %}{{username}}{% endblock %}
 </div>
+<html>
 
 <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
@@ -16,15 +16,13 @@
 <div class="container" >
     <img src ="{{ url_for('static', filename='images/Logo_DesTapaIS_fondo.png') }}"
          alt = "DesTapaIS Logo" height="300" width="300" />
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-4 well well-sm">
+    <div class="row" >
+        <div class="col-xs-12 col-sm-12 col-md-4 well well-sm"  " >
             <legend align="center">Registra un nuevo Local!</legend>
-
             <form action="" method="POST"  enctype="multipart/form-data">
                 <input class="form-control" name="name" placeholder="Local Name" type="text" required autofocus/>
                 <input class="form-control" name="address" placeholder="Address" type="text"/>
                 <script src="{{ url_for('static', filename='js/validatePw.js') }}"></script>
-
                 <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css"
                       rel="stylesheet">
                 <link rel="stylesheet" type="text/css" media="screen"
@@ -42,10 +40,11 @@
 </div>
 <style>
    body{
-        background-image: url("{{ url_for('static', filename='images/wallpaper_spag.jpg') }}");
-        display:block;
-          margin-left: auto;
+        background-image: url("{{ url_for('static', filename='images/local_hd.jpg') }}");
+        background-size:cover;
+        margin-left: auto;
         margin-right: auto;
+        display:block;
     }
 </style>
 </body>
