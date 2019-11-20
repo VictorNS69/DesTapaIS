@@ -53,8 +53,7 @@ def edit_profile(username):
             query = "SELECT * FROM 'Usuario' WHERE username=?"
             cursor = conn.execute(query,[username])
             data = cursor.fetchone()
-            return render_template('edit_profile.html', username = data["username"], name = data["nombre"],
-            last_name = data["apellidos"], email = data["email"], password = data["contrasena"],
-            description = data["descripcion"], birthdate = data["fecha_nacimiento"] )
+            return render_template('edit_profile.html', data = data)
+            
 
 
