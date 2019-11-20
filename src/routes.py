@@ -131,6 +131,7 @@ def new_tasting(username):
             query = "UPDATE 'Degustacion' SET 'valoracion_promedio'='{}'".format(valor_promedio)
             c.execute(query)
             conn.commit()
+            conn.close()
 
     query = "SELECT nombre FROM Local"
     c.execute(query)
