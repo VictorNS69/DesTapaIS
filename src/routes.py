@@ -91,7 +91,6 @@ def new_tasting(username):
     if request.method == 'POST':
             c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
             details = request.form
-            print(details)
             image = request.files["image"]
             blob = image.read()
             query = "SELECT nombre, Local_id FROM Degustacion"
@@ -125,13 +124,10 @@ def new_tasting(username):
             query = "SELECT valor FROM Valoracion WHERE Degustacion_id='{}'".format(id_deg)
             c.execute(query)
             valores = c.fetchall()
-            print(valores)
             suma = 0
             for valor in valores:
                 suma += valor[0]
-                print("suma:"+str(suma))
             valor_promedio = suma / len(valores)
-            print("valor promedio: "+str(valor_promedio))
             query = "UPDATE 'Degustacion' SET 'valoracion_promedio'='{}'".format(valor_promedio)
             c.execute(query)
             conn.commit()

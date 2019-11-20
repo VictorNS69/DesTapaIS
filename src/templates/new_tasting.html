@@ -23,7 +23,7 @@
                     <label for="star3" title="3">3 stars</label>
                     <input type="radio" id="star2" name="rate" value="2" />
                     <label for="star2" title="2">2 stars</label>
-                    <input type="radio" id="star1" name="rate" value="1" />
+                    <input type="radio" id="star1" name="rate" value="1" checked/>
                     <label for="star1" title="1">1 star</label>
                 </div>
                 <p></p>
@@ -39,13 +39,15 @@
 
                 <script type="text/javascript">
                       $(function(){
-                        $("#datepicker").datepicker();
+                        $("#datepicker").datepicker({
+                            dateFormat: "yy/mm/dd"
+                            });
                         });
                 </script>
 
                 <p>Date: <input type="text" name="date" id="datepicker" required></p>
 
-                <script type="text/javascript">
+                <!-- type="text/javascript">
 
                         $( function() {
                             var availableTags = {{locales|tojson}};
@@ -63,7 +65,17 @@
                   <label for="tags">Local:
                   <input name="local" id="tags">
                        </label>
-                </div>
+                </div-->
+
+                Local: <select name="local" id="local" required>
+                {% for local in locales %}
+                <option value="{{local}}">{{local}}</option>
+                {% endfor %}
+                </select>
+                    <p><a class="underlineHover" href="/{{username}}/new_local">¿No locals? Create one!</a></p>
+
+
+
 
                 <label class="radio-inline">
                     <input checked type="radio" name="type" id="type1" value="food"/>
