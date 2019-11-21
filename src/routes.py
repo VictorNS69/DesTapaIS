@@ -5,6 +5,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 @app.route('/', methods=['GET', 'POST'])
+
 def init():
     return render_template('init.html')
 
@@ -63,6 +64,7 @@ def sign_in():
                 try:
                     c.execute(query, data_tuple)
                     conn.commit()
+                    conn.close()
                     # TODO: return HTML mira tu correo para validar
                     return redirect(url_for('homepage', username=details["username"]))
                 except sqlite3.IntegrityError as e:
@@ -75,6 +77,25 @@ def sign_in():
     return render_template('sign_up.html')
 
 
+@app.route('/<string:username>/profile', methods=['GET'])
+def profile(username):
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+            query = "SELECT * FROM Usuario WHERE username = ? "
+            c.execute(query, (username,))
+            conn.commit()
+            result = c.fetchone()
+
+    except sqlite3.OperationalError as e:
+        print("Error:", e)
+        return "Error 503 Service Unavailable.\nPlease try again later"
+
+    return render_template('userprofile.html', result=result)
+
+
 @app.route('/<string:username>/home')
 def homepage(username):
     return render_template('homepage.html', username=username)
@@ -83,6 +104,7 @@ def homepage(username):
 @app.route('/<username>/friends', methods=['GET', 'POST'])
 def amigos(username):
     return render_template('friends.html')
+
 
 @app.route('/<string:username>/new_tasting', methods=['GET', 'POST'])
 def new_tasting(username):
@@ -140,7 +162,4 @@ def new_tasting(username):
     for local in locales_tupla:
         locales.append(local[0])
     return render_template('new_tasting.html', username=username, locales=locales)
-
-
-
 
