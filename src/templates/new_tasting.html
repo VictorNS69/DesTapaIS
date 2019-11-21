@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% block navbar %}
+{{super()}}
+<div style="visibility: hidden">
+    {% block user %}{{username}}{% endblock %}
+</div>
+<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rating.css') }}">
+<!------ Include the above in your HEAD tag ---------->
+<title>New tasting</title>
+
+<div class="container" >
+    <img src ="{{ url_for('static', filename='images/Logo_DesTapaIS_fondo.png') }}"
+         alt = "DesTapaIS Logo" height="300" width="300" />
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-4 well well-sm">
+            <legend align="center">New tasting</legend>
+
+            <form  method="POST"  enctype="multipart/form-data">
+
+                <div class="rate">
+                    <input type="radio" id="star5" name="rate" value="5" />
+                    <label for="star5" title="5">5 stars</label>
+                    <input type="radio" id="star4" name="rate" value="4" />
+                    <label for="star4" title="4">4 stars</label>
+                    <input type="radio" id="star3" name="rate" value="3" checked/>
+                    <label for="star3" title="3">3 stars</label>
+                    <input type="radio" id="star2" name="rate" value="2" />
+                    <label for="star2" title="2">2 stars</label>
+                    <input type="radio" id="star1" name="rate" value="1" />
+                    <label for="star1" title="1">1 star</label>
+                </div>
+                <p></p>
+                <input class="form-control" name="name" placeholder="Name" type="text" required autofocus/>
+
+                <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css"
+                      rel="stylesheet">
+                <textarea id="description" name="description" rows="4" cols="200" placeholder="A short description">
+                </textarea>
+
+                 <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+                <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+                <script type="text/javascript">
+                      $(function(){
+                        $("#datepicker").datepicker({
+                            dateFormat: "yy/mm/dd"
+                            });
+                        });
+                </script>
+
+                <p>Date: <input type="text" name="date" id="datepicker" required></p>
+
+                Local: <select name="local" id="local" required>
+                {% for local in locales %}
+                <option value="{{local}}">{{local}}</option>
+                {% endfor %}
+                </select>
+                    <p><a class="underlineHover" href="/{{username}}/new_local">¿No locals? Create one!</a></p>
+                <label class="radio-inline">
+                    <input checked type="radio" name="type" id="type1" value="food"/>
+                    Food
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="type" id="type2" value="drink"/>
+                    Drink
+                </label>
+                <p></p>
+                <input class="form-control" name="origin" placeholder="Origin of the food" type="text" required autofocus/>
+                <input class="form-control" name="size" placeholder="Size" type="text" required autofocus/>
+                <input class="form-control" name="taste" placeholder="Taste qualifier (sweet, salty...)" type="text" required autofocus/>
+                <p></p>
+                <div class="form-group">
+                  <label>Select image</label>
+                  <div class="custom-file">
+                    <input type="file" class="custom-file-input" name="image" id="image" accept="image/*">
+                    <label class="custom-file-label" for="image"></label>
+                  </div>
+                </div>
+                <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+<style>
+   body{
+        background-image: url("{{ url_for('static', filename='images/food-background.jpg') }}");
+        display:block;
+        margin-left: auto;
+        margin-right: auto;
+
+    }
+
+
+</style>
+{% endblock %}
