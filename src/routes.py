@@ -70,7 +70,6 @@ def homepage(username):
     return render_template('homepage.html',username=username)
 
 
-
 @app.route('/<string:username>/profile', methods=['GET'])
 def profile(username):
     try:
@@ -87,7 +86,7 @@ def profile(username):
         print("Error:", e)
         return "Error 503 Service Unavailable.\nPlease try again later"
 
-    return render_template('profile.html', result=result)
+    return render_template('userprofile.html', result=result)
 
 
 @app.route('/<string:username>/homepage/<string:local>', methods=['GET'])
@@ -106,4 +105,4 @@ def local(local):
         print("Error:", e)
         return "Error 503 Service Unavailable.\nPlease try again later"
 
-    return render_template('local.html', result=result);
+    return render_template('local.html', result=result)
