@@ -1,5 +1,5 @@
 from src import app, DB_PATH, functions
-from flask import render_template, request
+from flask import render_template, request, redirect, url_for
 import sqlite3
 
 
@@ -32,7 +32,6 @@ def sign_in():
                 try:
                     c.execute(query, data_tuple)
                     conn.commit()
-                    conn.close()
                     # TODO: return HTML mira tu correo para validar
                     # TODO: return HTML menú principal ha de ser la ruta /login
                     render_template('login.html')
@@ -67,20 +66,30 @@ def resume(username):
 
 @app.route('/<string:username>/homepage')
 def homepage(username):
-    return render_template('homepage.html',username=username)
+    return render_template('homepage.html', username=username)
 
 
-@app.route('/<string:username>/new_local')
+@app.route('/<string:username>/new_local',  methods=['GET', 'POST'])
 def new_local(username):
     if request.method == "POST":
         with sqlite3.connect(DB_PATH) as conn:
             c = conn.cursor()
             c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
             details = request.form
-            query = "INSERT INTO Local (nombre, direccion, resena, Usuario_id) VALUES (?, ?, ?,"\
-                "(SELECT id FROM Usuario WHERE nombre='{}')".format(username)
-            data_tuple = (details["name"], details["address"], details["description"])
-            c.execute(query, data_tuple)
-            conn.commit()
-            conn.close()
+            print(details)
+            print("username: "+username)
+            query = "SELECT id FROM Usuario WHERE username='{}'".format(username)
+            print("query: "+query)
+            c.execute(query)
+            id_user = c.fetchone()[0]
+            query = "INSERT INTO Local (nombre, direccion, resena, Usuario_id) VALUES (?, ?, ?, ?)"
+            data_tuple = (details["name"], details["address"], details["description"], id_user)
+            try:
+                c.execute(query, data_tuple)
+                conn.commit()
+                return redirect(url_for('home'))
+            except sqlite3.IntegrityError as e:
+                print("Error:", e)
+                return render_template('local_already_exists.html', username=username)
+
     return render_template('new_local.html', username=username)

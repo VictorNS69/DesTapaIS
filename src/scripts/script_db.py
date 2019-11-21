@@ -59,7 +59,7 @@ c.execute('''CREATE TABLE Obtiene_galardon
 c.execute('''CREATE TABLE Local
              (id INTEGER PRIMARY KEY,
              nombre TEXT, 
-             direccion TEXT, 
+             direccion TEXT UNIQUE, 
              resena TEXT, 
              Usuario_id INTEGER,
              FOREIGN KEY(Usuario_id) REFERENCES Usuario (id))''')
@@ -75,7 +75,7 @@ c.execute('''CREATE TABLE Degustacion
              (id INTEGER PRIMARY KEY,
              valoracion_promedio DOUBLE NOT NULL,
              nombre TEXT NOT NULL, 
-             descripcion TEXT NOT NULL UNIQUE, 
+             descripcion TEXT NOT NULL, 
              fecha DATE NOT NULL, 
              tipo_comida TEXT NOT NULL, 
              procedencia TEXT NOT NULL,
