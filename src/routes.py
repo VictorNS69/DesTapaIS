@@ -5,7 +5,6 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 @app.route('/', methods=['GET', 'POST'])
-
 def init():
     return render_template('init.html')
 
@@ -64,7 +63,6 @@ def sign_in():
                 try:
                     c.execute(query, data_tuple)
                     conn.commit()
-                    conn.close()
                     # TODO: return HTML mira tu correo para validar
                     return redirect(url_for('homepage', username=details["username"]))
                 except sqlite3.IntegrityError as e:
@@ -99,6 +97,32 @@ def profile(username):
 @app.route('/<string:username>/home')
 def homepage(username):
     return render_template('homepage.html', username=username)
+
+
+@app.route('/<string:username>/new_local',  methods=['GET', 'POST'])
+def new_local(username):
+    if request.method == "POST":
+        with sqlite3.connect(DB_PATH) as conn:
+            c = conn.cursor()
+            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+            details = request.form
+            print(details)
+            print("username: "+username)
+            query = "SELECT id FROM Usuario WHERE username='{}'".format(username)
+            print("query: "+query)
+            c.execute(query)
+            id_user = c.fetchone()[0]
+            query = "INSERT INTO Local (nombre, direccion, resena, Usuario_id) VALUES (?, ?, ?, ?)"
+            data_tuple = (details["name"], details["address"], details["description"], id_user)
+            try:
+                c.execute(query, data_tuple)
+                conn.commit()
+                return redirect(url_for('homepage', username=username))
+            except sqlite3.IntegrityError as e:
+                print("Error:", e)
+                return render_template('local_already_exists.html', username=username)
+
+    return render_template('new_local.html', username=username)
 
 
 @app.route('/<username>/friends', methods=['GET', 'POST'])
@@ -153,7 +177,6 @@ def new_tasting(username):
             query = "UPDATE 'Degustacion' SET 'valoracion_promedio'='{}'".format(valor_promedio)
             c.execute(query)
             conn.commit()
-            conn.close()
 
     query = "SELECT nombre FROM Local"
     c.execute(query)
