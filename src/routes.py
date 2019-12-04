@@ -200,7 +200,7 @@ def search_list(username, request):
         c = conn.cursor()
         req = json.loads(request)
         if req["category"] == "None":
-            return "No se ha selecionado categoria"  # TODO hacer html
+            return render_template('select_category.html', username=username)
 
         regex = req["text"]
         if req["category"] == "Usuario":
@@ -219,9 +219,9 @@ def search_list(username, request):
         c.execute(query)
         values = c.fetchall()
         if not values:
-            return "no se han encontrado resultados"  # TODO html
+            return render_template('search_no_results.html', username=username)
 
         # TODO: borrar comentario
         """request tiene (CATEGORIA, [ARRAY DE LA QUERY])
-        Tiene los datos en el orden establecido en el script de creación de la DB (/src/scripts/script_db.py """
+        Tiene los datos en el orden establecido en el script de creación de la DB (/src/scripts/script_db.py) """
         return render_template('search_list.html', username=username, request=(req["category"], values))

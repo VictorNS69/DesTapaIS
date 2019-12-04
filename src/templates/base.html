@@ -7,26 +7,30 @@
 <!-- Top navigation -->
 <div class="topnav">
 
-  <div class="topnav-right">
-<ul class="nav navbar-nav">
+    <div class="topnav-right">
+        <ul class="nav navbar-nav">
             <!--img alt="DesTapaIS" src="{{ url_for('static', filename='images/Logo_DesTapaIS_small.png') }}" align="left"-->
-        <ul class="nav navbar-nav">
-            <li class="active"><a href="/{% block user %}{% endblock %}/home"><span class="glyphicon glyphicon-home" aria-hidden="true"></span></a>
-            </li>
-        </ul>
-    <li class="active"><a href="/{% block user2 %}{% endblock %}/search"><span class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="/{% block user %}{% endblock %}/home"><span class="glyphicon glyphicon-home"
+                                                                                        aria-hidden="true"></span></a>
+                </li>
+            </ul>
+            <li class="active"><a href="/{% block user2 %}{% endblock %}/search"><span
+                    class="glyphicon glyphicon-search" aria-hidden="true"></span></a>
             </li>
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#help"><span class="glyphicon glyphicon-question-sign" aria-hidden="true"></span></a>
+                <li class="active"><a href="#help"><span class="glyphicon glyphicon-question-sign"
+                                                         aria-hidden="true"></span></a>
                 </li>
             </ul>
         </ul>
         <ul class="nav navbar-nav">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#perfilPersonal"><span class="glyphicon glyphicon-user" aria-hidden="true"></span></a>
+                <li class="active"><a href="#perfilPersonal"><span class="glyphicon glyphicon-user"
+                                                                   aria-hidden="true"></span></a>
                 </li>
             </ul>
         </ul>
-  </div>
+    </div>
 </div>
 {% endblock %}
