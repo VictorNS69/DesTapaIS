@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3, datetime
 from src import app, DB_PATH, functions
 from flask import render_template, request, redirect, url_for, json
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -185,4 +185,36 @@ def new_tasting(username):
     for local in locales_tupla:
         locales.append(local[0])
     return render_template('new_tasting.html', username=username, locales=locales)
+
+
+@app.route('/<username>/locals/<local>', methods=['GET', 'POST'])
+def local(username, local):
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+        if request.method == 'POST':
+            query = "SELECT id FROM Local WHERE nombre = ? "
+            c.execute(query, (local,))
+            conn.commit()
+            id_local = c.fetchone()[0]
+            query = "SELECT id FROM Usuario WHERE username = ? "
+            c.execute(query, (username,))
+            conn.commit()
+            id_user = c.fetchone()[0]
+            query = "INSERT INTO 'Favorito_local' ('Usuario_id', 'Local_id', 'fecha') VALUES (?, ?, ?)"
+            data_tuple = (id_user, id_local, str(datetime.datetime.now()))
+            c.execute(query, data_tuple)
+            conn.commit()
+            return redirect(url_for('homepage', username=username))
+        c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+        query = "SELECT * FROM Local WHERE nombre = ? "
+        c.execute(query, (local,))
+        conn.commit()
+        result = c.fetchone()
+
+    except sqlite3.OperationalError as e:
+        print("Error:", e)
+        return "Error 503 Service Unavailable.\nPlease try again later"
+    return render_template('local.html', username=username, local=local, result=result)
 
