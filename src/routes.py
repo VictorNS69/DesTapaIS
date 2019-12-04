@@ -190,6 +190,38 @@ def new_tasting(username):
 @app.route('/<string:username>/search', methods=['GET', 'POST'])
 def search(username):
     if request.method == 'POST':
-        print("se hace post")
-        return "post"
+        return redirect(url_for('search_list', username=username, request=json.dumps(request.form)))
     return render_template('search.html', username=username)
+
+
+@app.route('/<string:username>/search_list/<request>', methods=['GET', 'POST'])
+def search_list(username, request):
+    with sqlite3.connect(DB_PATH) as conn:
+        c = conn.cursor()
+        req = json.loads(request)
+        if req["category"] == "None":
+            return "No se ha selecionado categoria"  # TODO hacer html
+
+        regex = req["text"]
+        if req["category"] == "Usuario":
+            query = "SELECT * FROM Usuario WHERE username LIKE '%" + regex+ "%' OR email LIKE '%" + regex +\
+                    "%' OR nombre LIKE '%" + regex + "%' OR apellidos LIKE '%" + regex + \
+                    "%' OR pais LIKE '%" + regex + "%' OR descripcion LIKE '%" + regex \
+                    + "%' EXCEPT SELECT * FROM Usuario WHERE username='{}';".format(username)
+        elif req["category"] == "Local":
+            query = "SELECT * FROM Local WHERE nombre LIKE '%" + regex + "%' OR direccion LIKE '%" + regex + \
+                    "%' OR resena LIKE '%" + regex + "%';"
+        elif req["category"] == "Degustacion":
+            query = "SELECT * FROM Degustacion WHERE nombre LIKE '%" + regex+ "%' OR descripcion LIKE '%" + regex +\
+                "%' OR tipo_comida LIKE '%" + regex + "%' OR procedencia LIKE '%" + regex +\
+                "%' OR valoracion_promedio LIKE '%" + regex + "%' OR calificador_gusto LIKE '%" + regex + "%';"
+
+        c.execute(query)
+        values = c.fetchall()
+        if not values:
+            return "no se han encontrado resultados"  # TODO html
+
+        # TODO: borrar comentario
+        """request tiene (CATEGORIA, [ARRAY DE LA QUERY])
+        Tiene los datos en el orden establecido en el script de creación de la DB (/src/scripts/script_db.py """
+        return render_template('search_list.html', username=username, request=(req["category"], values))
