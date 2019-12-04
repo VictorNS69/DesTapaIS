@@ -186,3 +186,10 @@ def new_tasting(username):
         locales.append(local[0])
     return render_template('new_tasting.html', username=username, locales=locales)
 
+
+@app.route('/<string:username>/search', methods=['GET', 'POST'])
+def search(username):
+    if request.method == 'POST':
+        print("se hace post")
+        return "post"
+    return render_template('search.html', username=username)
