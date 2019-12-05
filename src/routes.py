@@ -1,4 +1,4 @@
-import sqlite3
+import sqlite3, datetime
 from src import app, DB_PATH, functions
 from flask import render_template, request, redirect, url_for, json
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -186,3 +186,31 @@ def new_tasting(username):
         locales.append(local[0])
     return render_template('new_tasting.html', username=username, locales=locales)
 
+
+@app.route('/<username>/tastings/<id_tasting>', methods=['GET', 'POST'])
+def profile(username, id_tasting):
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            if request.method == 'POST':
+                query = "SELECT id FROM Usuario WHERE username = ? "
+                c.execute(query, (username,))
+                conn.commit()
+                id_user = c.fetchone()[0]
+                query = "INSERT INTO 'Favorito_degustacion' ('Usuario_id', 'Degustacion_id', 'fecha') VALUES (?, ?, ?)"
+                data_tuple = (id_user, id_tasting, str(datetime.datetime.now()))
+                c.execute(query, data_tuple)
+                conn.commit()
+                return redirect(url_for('homepage', username=username))
+            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+            query = "SELECT * FROM Degustacion WHERE id = ? "
+            c.execute(query, (id_tasting,))
+            conn.commit()
+            result = c.fetchone()
+
+    except sqlite3.OperationalError as e:
+        print("Error:", e)
+        return "Error 503 Service Unavailable.\nPlease try again later"
+
+    return render_template('tasting.html', result=result)
