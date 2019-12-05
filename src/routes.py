@@ -187,17 +187,13 @@ def new_tasting(username):
     return render_template('new_tasting.html', username=username, locales=locales)
 
 
-@app.route('/<username>/locals/<local>', methods=['GET', 'POST'])
-def local(username, local):
+@app.route('/<username>/locals/<id_local>', methods=['GET', 'POST'])
+def local(username, id_local):
     try:
         with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
         if request.method == 'POST':
-            query = "SELECT id FROM Local WHERE nombre = ? "
-            c.execute(query, (local,))
-            conn.commit()
-            id_local = c.fetchone()[0]
             query = "SELECT id FROM Usuario WHERE username = ? "
             c.execute(query, (username,))
             conn.commit()
@@ -208,8 +204,8 @@ def local(username, local):
             conn.commit()
             return redirect(url_for('homepage', username=username))
         c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
-        query = "SELECT * FROM Local WHERE nombre = ? "
-        c.execute(query, (local,))
+        query = "SELECT * FROM Local WHERE id = ? "
+        c.execute(query, (id_local,))
         conn.commit()
         result = c.fetchone()
 
