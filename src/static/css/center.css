@@ -1,0 +1,12 @@
+.wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+.boton {
+    display: table-cell;
+    position: absolute;
+    top:50%;
+    transform: translateY(-50%);
+}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block navbar %}
+{{super()}}
+<div style="visibility: hidden">
+    {% block user %}{{username}}{% endblock %}
+</div>
+<html>
+<head>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/local.css') }}"/>
+    <title>Local</title>
+</head>
+<body>
+<div class="profile_box">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css"
+              integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
+              crossorigin="anonymous">
+    <p class="lead" style="padding-left:30px; text-align:left">Nombre: {{result["nombre"]}} </p>
+</div>
+
+</body>
+</html>
+{% endblock %}

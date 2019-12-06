@@ -1,0 +1,144 @@
+body{
+background-image: url(../images/bg_pic.jpg);
+background-size: cover;
+background-attachment:fixed;
+height:4000px;
+}
+.header1{
+position:fixed;
+width:100%;
+height:60px;
+top:0;
+left:0;
+z-index:7;
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0 30px;
+  background: #fff;
+}
+.profile_box{
+width:1300px;
+height:600px;
+padding:5px;
+top:100px;
+left:200px;
+background-color:#eee;
+position:absolute;
+border-radius: 6px ;
+}
+.profilepic{
+width:100px;
+height:140px;
+top:50px;
+left:110px;
+position:absolute;
+border-radius:2px/2px;
+-webkit-box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
+}
+.username{left:275px;
+font-size:20px;
+font-family:verdana;
+color:white;
+top:325px;
+height:50px;
+width:200px;
+position:absolute;
+}
+.box11{
+top:100px;
+left:280px;
+height:50px;
+width:90px;
+padding-top: 10px;
+background:white;
+position:absolute;
+border-radius:6px;
+font-size:16px;
+font-family: 'Shift', sans-serif;
+color: white;
+background-color:#3399ff;
+cursor:pointer;
+text-align:center;
+}
+.box12{
+top:100px;
+left:380px;
+height:50px;
+width:90px;
+padding-top: 10px;
+background:white;
+position:absolute;
+border-radius:6px;
+font-size:16px;
+font-family: 'Shift', sans-serif;
+color: white;
+background-color:#3399ff;
+cursor:pointer;
+text-align:center;
+}
+.box13{
+top:100px;
+left:480px;
+height:50px;
+width:90px;
+padding-top: 10px;
+background:white;
+position:absolute;
+border-radius:6px;
+font-size:16px;
+font-family: 'Shift', sans-serif;
+color: white;
+background-color:#3399ff;
+cursor:pointer;
+text-align:center;
+}
+.box14{
+top:100px;
+left:580px;
+height:50px;
+width:90px;
+padding-top: 10px;
+background:white;
+position:absolute;
+border-radius:6px;
+font-size:16px;
+font-family: 'Shift', sans-serif;
+color: white;
+background-color:#3399ff;
+cursor:pointer;
+text-align:center;
+}
+select{
+top:100px;
+left:680px;
+height:60px;
+width:90px;
+background:white;
+position:absolute;
+border-radius:6px;
+font-size:16px;
+font-family: 'Shift', sans-serif;
+color: white;
+background-color:#3399ff;
+cursor:pointer
+}
+.box11:hover{
+background:#666666;
+}
+.box12:hover,.box12:active{
+background:#666666;
+}
+.box13:hover{
+background:#666666;
+}
+.box14:hover{
+background:#666666;
+}
+select:hover{
+background:#666666;
+}
+.jumbotron {
+        background: rgba(204, 204, 204, 0.55)
+    }
+

@@ -3,16 +3,16 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
 <!------ Include the above in your HEAD tag ---------->
-<title>DesTapaIS: Registro</title>
+<title>Sign up</title>
 
 <div class="container" >
     <img src ="{{ url_for('static', filename='images/Logo_DesTapaIS_fondo.png') }}"
          alt = "DesTapaIS Logo" height="300" width="300" />
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-4 well well-sm">
-            <legend align="center">¡Regístrate!</legend>
+            <legend align="center">Sign up!!</legend>
 
-            <form action="" method="POST"  enctype="multipart/form-data">
+            <form  method="POST"  enctype="multipart/form-data">
                 <input class="form-control" name="username" placeholder="Your Username" type="text" required autofocus/>
                 <input class="form-control" name="firstname" placeholder="First Name" type="text"/>
                 <input class="form-control" name="lastname" placeholder="Last Name" type="text"/>
@@ -51,7 +51,6 @@
                         format: 'yyyy/MM/dd',
                         language: 'pt-SP'
                       });
-
                 </script>
                 <select id="country" name="country">
                     <option value="None" selected>Select your country</option>
@@ -305,7 +304,7 @@
                 <p></p>
                 <label class="radio-inline">
                     <input checked type="radio" name="sex" id="sex0" value="None"/>
-                    Prefiero no decirlo
+                    Other/Prefer not to say it
                 </label>
                 <label class="radio-inline">
                     <input type="radio" name="sex" id="sex1" value="male"/>
@@ -329,7 +328,7 @@
                 <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">
                     Sign up
                 </button>
-                <div class="buttons"><a href="/login">Ya tengo cuenta</a></div>
+                <div class="buttons"><a href="/login">I have an account already</a></div>
             </form>
         </div>
     </div>
@@ -339,6 +338,6 @@
         background-image: url("{{ url_for('static', filename='images/wallpaper_spag.jpg') }}");
         display:block;
           margin-left: auto;
-  margin-right: auto;
+        margin-right: auto;
     }
 </style>

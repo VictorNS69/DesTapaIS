@@ -1,0 +1,43 @@
+body{
+background-image: url(../images/bg_hd.jpg);
+background-size: cover;
+background-attachment:fixed;
+height:4000px;
+}
+.coverpad{
+top:50px;
+left:350px;
+background:white;
+height:700px;
+width:800px;
+position:absolute;
+border-radius: 6px ;
+}
+.profile_box{
+width:1300px;
+height:800px;
+padding:5px;
+top:100px;
+left:200px;
+background-color:#eee;
+position:absolute;
+border-radius: 6px ;
+}
+.profile_box0{
+width:1300px;
+height:600px;
+padding:5px;
+top:100px;
+left:200px;
+background-color:#eee;
+position:absolute;
+border-radius: 6px ;
+opacity:0,1;}
+.profilepic{
+width:260px;
+height:300px;
+top:50px;
+left:50px;
+position:absolute;
+border-radius:6px;
+}

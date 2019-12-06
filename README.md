@@ -6,8 +6,16 @@ Repositorio del Grupo 01 de la asignatura de Ingeniería del Software 2 para la 
 - SQLite3
 ## Pasos para ejecutar la aplicación
 ### 1. Crear el entorno virtual
-Crear un entorno virtual con **Python3.7**.
+Para crear el entorno virtual, necesitarás tener instalado `virtualenv wrapper`. En el siguiente [gist](https://gist.github.com/VictorNS69/25f82339708714628177a7e2bd566afc) tendrás información de cómo hacerlo.
 
+Crear un entorno virtual con **Python3.7** llamado _DesTapaIS_.
+```bash
+mkvirtualenv --python=/usr/bin/python3.7 DesTapaIS
+```
+Si el entorno no se ha activado por defecto, activalo.
+```bash
+workon DesTapaIS
+```
 Una vez creado, instalar las dependencias:
 ```bash
 pip install -r requirements.txt

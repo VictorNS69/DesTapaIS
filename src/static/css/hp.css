@@ -1,0 +1,82 @@
+body{
+background-image: url(../images/bg_food.png);
+background-size: cover;
+}
+#contenedor {
+    margin: 80px auto;
+    width: 1500px;  /* Ancho del contenedor */
+    heigth: 800px;
+box-sizing: border-box;
+-moz-box-sizing: border-box;
+}
+
+#contenedor input {
+height: 32px;
+visibility: hidden;
+}
+
+#contenedor label {
+float: left;
+cursor: pointer;
+font-size: 15px;  /* Tamaño del texto de las pestañas */
+line-height: 40px;
+height: 40px;
+padding: 0 20px;
+display: block;
+color: #888;  /* Color del texto de las pestañas */
+text-align: center;
+border-radius: 5px 5px 0 0;
+background: #eee;  /* Fondo de las pestañas */
+margin-right: 5px;
+}
+
+#contenedor input:hover + label {
+background: #ddd;  /* Fondo de las pestañas al pasar el cursor por encima */
+color: #666;  /* Color del texto de las pestañas al pasar el cursor por encima */
+}
+
+#contenedor input:checked + label {
+background: #FDFDFD;  /* Fondo de las pestañas al presionar */
+color: #444; /* Color de las pestañas al presionar */
+z-index: 6;
+line-height: 45px;
+height: 45px;
+position: relative;
+top: -5px;
+-webkit-transition: .1s;
+-moz-transition: .1s;
+-o-transition: .1s;
+-ms-transition: .1s;
+}
+
+.content {
+background: #FDFDFD;  /* Fondo del contenido */
+position: relative;
+width: 100%;
+height: 350px;  /* Alto del contenido */
+padding: 30px;
+z-index: 5;
+border-radius: 0 5px 5px 5px;
+}
+
+.content div {
+position: absolute;
+z-index: -100;
+opacity: 0;
+transition: all linear 0.1s;
+}
+
+#contenedor input.tab-selector-1:checked ~ .content .content-1,
+#contenedor input.tab-selector-2:checked ~ .content .content-2,
+#contenedor input.tab-selector-3:checked ~ .content .content-3,
+#contenedor input.tab-selector-4:checked ~ .content .content-4,
+#contenedor input.tab-selector-5:checked ~ .content .content-5,
+#contenedor input.tab-selector-6:checked ~ .content .content-6,
+#contenedor input.tab-selector-7:checked ~ .content .content-7 {
+    z-index: 100;
+    opacity: 1;
+    -webkit-transition: all ease-out 0.2s 0.1s;
+-moz-transition: all ease-out 0.2s 0.1s;
+-o-transition: all ease-out 0.2s 0.1s;
+-ms-transition: all ease-out 0.2s 0.1s;
+}
