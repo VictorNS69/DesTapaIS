@@ -204,7 +204,7 @@ def search_list(username, request):
 
         regex = req["text"]
         if req["category"] == "Usuario":
-            query = "SELECT * FROM Usuario WHERE username LIKE '%" + regex+ "%' OR email LIKE '%" + regex +\
+            query = "SELECT * FROM Usuario WHERE username LIKE '%" + regex + "%' OR email LIKE '%" + regex +\
                     "%' OR nombre LIKE '%" + regex + "%' OR apellidos LIKE '%" + regex + \
                     "%' OR pais LIKE '%" + regex + "%' OR descripcion LIKE '%" + regex \
                     + "%' EXCEPT SELECT * FROM Usuario WHERE username='{}';".format(username)
@@ -212,7 +212,7 @@ def search_list(username, request):
             query = "SELECT * FROM Local WHERE nombre LIKE '%" + regex + "%' OR direccion LIKE '%" + regex + \
                     "%' OR resena LIKE '%" + regex + "%';"
         elif req["category"] == "Degustacion":
-            query = "SELECT * FROM Degustacion WHERE nombre LIKE '%" + regex+ "%' OR descripcion LIKE '%" + regex +\
+            query = "SELECT * FROM Degustacion WHERE nombre LIKE '%" + regex + "%' OR descripcion LIKE '%" + regex +\
                 "%' OR tipo_comida LIKE '%" + regex + "%' OR procedencia LIKE '%" + regex +\
                 "%' OR valoracion_promedio LIKE '%" + regex + "%' OR calificador_gusto LIKE '%" + regex + "%';"
 
@@ -221,7 +221,17 @@ def search_list(username, request):
         if not values:
             return render_template('search_no_results.html', username=username)
 
-        # TODO: borrar comentario
-        """request tiene (CATEGORIA, [ARRAY DE LA QUERY])
-        Tiene los datos en el orden establecido en el script de creación de la DB (/src/scripts/script_db.py) """
         return render_template('search_list.html', username=username, request=(req["category"], values))
+
+
+@app.route('/<string:username>/help', methods=['GET', 'POST'])
+def help(username):
+    if request.method == 'POST':
+        return render_template('thank_you.html', username=username)
+
+    with sqlite3.connect(DB_PATH) as conn:
+        c = conn.cursor()
+        query = "SELECT * FROM Usuario WHERE username='{}';".format(username)
+        c.execute(query)
+        value = c.fetchone()
+        return render_template('bug&comments.html', username=username, email=value[3])
