@@ -23,6 +23,10 @@ def login():
                 print("result", result)
                 if result is None:
                     return render_template("user_not_exist.html")
+
+                if result[-1] == 0:
+                    return render_template("no_verification.html", username=details["username"])
+
                 check = check_password_hash(result[2], details["password"])
                 if check:
                     return redirect(url_for('homepage', username=details["username"]))
@@ -52,7 +56,7 @@ def sign_in():
             else:
                 image = request.files["image"]
                 blob = image.read()
-                verified = 1  # TODO: elimiar verificado hardcoded cuando se tenga verificacion por correo
+                verified = 0
 
                 query = "INSERT INTO 'Usuario' ('username', 'contrasena', 'email', 'fecha_nacimiento', nombre," \
                         "'apellidos', 'pais', 'descripcion', 'genero', 'verificado', 'foto') VALUES (?, ?, ?, ?, ?, " \
@@ -63,8 +67,18 @@ def sign_in():
                 try:
                     c.execute(query, data_tuple)
                     conn.commit()
-                    # TODO: return HTML mira tu correo para validar
-                    return redirect(url_for('homepage', username=details["username"]))
+                    from_address = "destapais.grupo1@gmail.com"
+                    to_address = details["email"]
+                    subject = "DesTapaIS verification mail"
+                    message = "Hi! "+details["username"]+" This is your verification link: " \
+                              "http://127.0.0.1:5000/"+details["username"]+"/verification"
+                    username = "destapais.grupo1"
+                    psw = "grupo1IS2"
+
+                    functions.send_email(from_address, [to_address], "", subject, message, username, psw)
+
+                    return render_template('verify_yourself.html', username=details["username"])
+
                 except sqlite3.IntegrityError as e:
                     print("Error:", e)
                     return render_template('error_sign_in.html', name=details["username"], email=details["email"])
@@ -235,3 +249,13 @@ def help(username):
         c.execute(query)
         value = c.fetchone()
         return render_template('bug&comments.html', username=username, email=value[3])
+
+
+@app.route('/<string:username>/verification', methods=['GET', 'POST'])
+def verification(username):
+    with sqlite3.connect(DB_PATH) as conn:
+        c = conn.cursor()
+        query = "UPDATE Usuario SET verificado=1 WHERE username='{}';".format(username)
+        c.execute(query)
+        c.fetchone()
+    return redirect(url_for('login', username=username))
