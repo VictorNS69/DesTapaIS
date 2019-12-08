@@ -1,21 +1,40 @@
-{% extends "base.html" %}
-{% block navbar %}
-{{super()}}
-<div style="visibility: hidden">
-    {% block user %}{{username}}{% endblock %}
-    {% block user2 %}{{username}}{% endblock %}
-    {% block user3 %}{{username}}{% endblock %}
-</div>
-<title>Search</title>
-<form method="POST" enctype="multipart/form-data">
-    <select id="category" name="category" required>
-        <option value="None" selected>Select a category</option>
-        <option value="Degustacion">Tasting</option>
-        <option value="Usuario">Users</option>
-        <option value="Local">Locals</option>
-    </select>
-    <input name="text" type="text" class="form-control" placeholder="What are you looking for?"
-           aria-label="Text input with dropdown button" required>
-    <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Search</button>
-</form>
-{% endblock %}
+
+<!DOCTYPE html>
+
+<head>
+    <link type="text/css" rel="stylesheet" href="../static/css/search.css" />
+</head>
+
+<body>
+    {% extends "base.html" %}
+    {% block navbar %}
+    {{super()}}
+    <div style="visibility: hidden">
+        {% block user %}{{username}}{% endblock %}
+        {% block user2 %}{{username}}{% endblock %}
+    </div>
+    <title>Search</title>
+    <div class="form-container">
+        <form method="POST" enctype="multipart/form-data">
+            <div class="comboContainer">
+                <select class="combo" id="category" name="category" required>
+                    <option value="None" selected>Select a category</option>
+                    <option value="Degustacion">Tasting</option>
+                    <option value="Usuario">Users</option>
+                    <option value="Local">Locals</option>
+                </select>
+            </div>
+            <div class="inputContainer">
+                <input name="text" type="text" class="form-control" placeholder="What are you looking for?"
+                    aria-label="Text input with dropdown button" required>
+            </div>
+            <div class="buttonContainer">
+                <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">Search</button>
+            </div>
+        </form>
+    </div>
+    {% endblock %}
+</body>
+
+</html>
+
