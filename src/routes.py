@@ -23,6 +23,10 @@ def login():
                 print("result", result)
                 if result is None:
                     return render_template("user_not_exist.html")
+
+                if result[-1] == 0:
+                    return render_template("no_verification.html", username=details["username"])
+
                 check = check_password_hash(result[2], details["password"])
                 if check:
                     return redirect(url_for('homepage', username=details["username"]))
@@ -52,7 +56,7 @@ def sign_in():
             else:
                 image = request.files["image"]
                 blob = image.read()
-                verified = 1  # TODO: elimiar verificado hardcoded cuando se tenga verificacion por correo
+                verified = 0
 
                 query = "INSERT INTO 'Usuario' ('username', 'contrasena', 'email', 'fecha_nacimiento', nombre," \
                         "'apellidos', 'pais', 'descripcion', 'genero', 'verificado', 'foto') VALUES (?, ?, ?, ?, ?, " \
@@ -63,8 +67,18 @@ def sign_in():
                 try:
                     c.execute(query, data_tuple)
                     conn.commit()
-                    # TODO: return HTML mira tu correo para validar
-                    return redirect(url_for('homepage', username=details["username"]))
+                    from_address = "destapais.grupo1@gmail.com"
+                    to_address = details["email"]
+                    subject = "DesTapaIS verification mail"
+                    message = "Hi! "+details["username"]+" This is your verification link: " \
+                              "http://127.0.0.1:5000/"+details["username"]+"/verification"
+                    username = "destapais.grupo1"
+                    psw = "grupo1IS2"
+
+                    functions.send_email(from_address, [to_address], "", subject, message, username, psw)
+
+                    return render_template('verify_yourself.html', username=details["username"])
+
                 except sqlite3.IntegrityError as e:
                     print("Error:", e)
                     return render_template('error_sign_in.html', name=details["username"], email=details["email"])
@@ -186,3 +200,62 @@ def new_tasting(username):
         locales.append(local[0])
     return render_template('new_tasting.html', username=username, locales=locales)
 
+
+@app.route('/<string:username>/search', methods=['GET', 'POST'])
+def search(username):
+    if request.method == 'POST':
+        return redirect(url_for('search_list', username=username, request=json.dumps(request.form)))
+    return render_template('search.html', username=username)
+
+
+@app.route('/<string:username>/search_list/<request>', methods=['GET', 'POST'])
+def search_list(username, request):
+    with sqlite3.connect(DB_PATH) as conn:
+        c = conn.cursor()
+        req = json.loads(request)
+        if req["category"] == "None":
+            return render_template('select_category.html', username=username)
+
+        regex = req["text"]
+        if req["category"] == "Usuario":
+            query = "SELECT * FROM Usuario WHERE username LIKE '%" + regex + "%' OR email LIKE '%" + regex +\
+                    "%' OR nombre LIKE '%" + regex + "%' OR apellidos LIKE '%" + regex + \
+                    "%' OR pais LIKE '%" + regex + "%' OR descripcion LIKE '%" + regex \
+                    + "%' EXCEPT SELECT * FROM Usuario WHERE username='{}';".format(username)
+        elif req["category"] == "Local":
+            query = "SELECT * FROM Local WHERE nombre LIKE '%" + regex + "%' OR direccion LIKE '%" + regex + \
+                    "%' OR resena LIKE '%" + regex + "%';"
+        elif req["category"] == "Degustacion":
+            query = "SELECT * FROM Degustacion WHERE nombre LIKE '%" + regex + "%' OR descripcion LIKE '%" + regex +\
+                "%' OR tipo_comida LIKE '%" + regex + "%' OR procedencia LIKE '%" + regex +\
+                "%' OR valoracion_promedio LIKE '%" + regex + "%' OR calificador_gusto LIKE '%" + regex + "%';"
+
+        c.execute(query)
+        values = c.fetchall()
+        if not values:
+            return render_template('search_no_results.html', username=username)
+
+        return render_template('search_list.html', username=username, request=(req["category"], values))
+
+
+@app.route('/<string:username>/help', methods=['GET', 'POST'])
+def help(username):
+    if request.method == 'POST':
+        return render_template('thank_you.html', username=username)
+
+    with sqlite3.connect(DB_PATH) as conn:
+        c = conn.cursor()
+        query = "SELECT * FROM Usuario WHERE username='{}';".format(username)
+        c.execute(query)
+        value = c.fetchone()
+        return render_template('bug&comments.html', username=username, email=value[3])
+
+
+@app.route('/<string:username>/verification', methods=['GET', 'POST'])
+def verification(username):
+    with sqlite3.connect(DB_PATH) as conn:
+        c = conn.cursor()
+        query = "UPDATE Usuario SET verificado=1 WHERE username='{}';".format(username)
+        c.execute(query)
+        c.fetchone()
+    return redirect(url_for('login', username=username))
