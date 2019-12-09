@@ -1,0 +1,99 @@
+{% extends "base.html" %}
+{% block navbar %}
+{{super()}}
+<div style="visibility: hidden">
+    {% block user %}{{username}}{% endblock %}
+    {% block user2 %}{{username}}{% endblock %}
+    {% block user3 %}{{username}}{% endblock %}
+</div>
+<head>
+    <meta charset = "utf-8">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1">
+    <link href = "css/bootstrap.css" rel = "stylesheet" type = "text/css"/>
+    <link href="css.css" rel="stylesheet" type="text/css"/>
+    <link rel = "stylesheet" href = "http://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <title>Help & Comments</title>
+</head>
+
+<html>
+<head>
+    <meta charset = "utf-8">
+    <meta name = "viewport" content = "width=device-width, initial-scale=1">
+    <link href = "css/bootstrap.css" rel = "stylesheet" type = "text/css"/>
+    <link href="css.css" rel="stylesheet" type="text/css"/>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bugs&comments.css') }}">
+    <link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
+    <title>Help & Comments</title>
+</head>
+<body>
+<!------------container------->
+
+<div class="container">
+
+    <h1>Help, Comments & Bugs</h1>
+    <!-------Wrap------------>
+    <div id="wrap">
+        <div id="main">
+            <div class="row">
+                <div class="col-md-5">
+                    <h3 class="heading">Comments & Bugs</h3>
+                </div>
+                <div class="col-md-7">
+                    <div id="upper_blank"></div>
+                </div>
+            </div>
+        </div>
+
+        <p>Tell us how to improve our website</p>
+
+        <!------------Form Start---------->
+
+        <div id='form'>
+            <div class="row">
+                <div class="col-md-12">
+
+                    <form action="" method="POST" id="commentform" >
+
+                        <div id="comment-name" class="form-row">
+                            <input type = "text" value={{username}} disabled name = "name"  id = "name" >
+                        </div>
+                        <div id="comment-email" class="form-row">
+                            <input type = "text" value="{{email}}" name = "demail"  id = "email" disabled>
+                        </div>
+                        <div id="comment-message" class="form-row">
+                            <textarea name = "comment" placeholder = "Message" id = "comment" ></textarea>
+                        </div>
+                        <a href=""><input type="submit" name="dsubmit" id="commentSubmit" value="Submit Comment"></a>
+                        <input style="width: 30px" type="checkbox" value="1" name="subscribe" id="subscribe" >
+                        <p1><b>Mark if this is a bug</b></p1>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-------------------Reply Section------->
+    <div id="second">
+        <div class="row">
+            <div class="col-md-2">
+                <h3 class="second_heading"><b>Help</b></h3>
+            </div>
+            <div class="col-md-10">
+                <div class="blank"></div>
+            </div>
+        </div>
+    </div>
+    <div id="middle">
+        <i>This application has been developed by group 1 of the subject <b>Software Engineering II</b>.
+            <br>Group formed by: </i>
+        <i><p>Víctor Nieves Sánchez <br>Daniel Morgera Pérez <br> Yanran Chen Weng <br>Alejandro Senovilla Tejedor <br>Andrea Velarde Chávez</i></p>
+    </div>
+</div>
+<div align="middle">
+    <a href="/{{username}}/home"><input type="submit" name="dsubmit" id="commentSubmit" value="Go Back" align="middle"></a>
+</div>
+</body>
+</html>
+{% endblock %}
