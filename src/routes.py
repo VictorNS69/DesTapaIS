@@ -74,8 +74,8 @@ def sign_in():
 
     return render_template('sign_up.html')
 
-@app.route('/<username>/edit_profile', methods=['GET','POST'])
-def edit_profile(username):
+@app.route('/<username>/edit_info', methods=['GET','POST'])
+def edit_info(username):
     if request.method == 'GET':
         with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
@@ -83,10 +83,33 @@ def edit_profile(username):
             query = "SELECT * FROM 'Usuario' WHERE username=?"
             cursor = conn.execute(query,[username])
             data = cursor.fetchone()
-            return render_template('edit_profile.html', data = data)
+            return render_template('edit_info.html', data = data)
+    elif request.method == 'POST':
+        with sqlite3.connect(DB_PATH) as conn:
+            c = conn.cursor()
+            details = request.form
+            date = functions.date_validator(str(details["date"]).replace("/", "-"))
+            if not date:
+                return render_template('age_error.html')
+            else:
+                image = request.files["image"]
+                blob = image.read()
+                query = "INSERT INTO 'Usuario' ('username', 'contrasena', 'email', 'fecha_nacimiento', nombre," \
+                        "'apellidos', 'pais', 'descripcion', 'genero', 'verificado', 'foto') VALUES (?, ?, ?, ?, ?, " \
+                        "?, ? , ?, ?, ?, ?)"
+                data_tuple = (details["username"], generate_password_hash(details["password"]), details["email"],
+                              str(details["date"]), details["firstname"], details["lastname"], details["country"],
+                              details["description"], details["sex"], blob)
+                try:
+                    c.execute(query, data_tuple)
+                    conn.commit()
+                except sqlite3.IntegrityError as e:
+                    print("Error:", e)
+                    return render_template('error_sign_in.html', name=details["username"], email=details["email"])
+                except sqlite3.OperationalError as e:
+                    print("Error:", e)
+                    return "Error 503 Service Unavailable.\nPlease try again later"
             
-
-
 @app.route('/<string:username>/profile', methods=['GET'])
 def profile(username):
     try:
