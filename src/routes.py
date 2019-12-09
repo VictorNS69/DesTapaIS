@@ -1,4 +1,4 @@
-import sqlite3, datetime
+import sqlite3, datetime, base64
 from src import app, DB_PATH, functions
 from flask import render_template, request, redirect, url_for, json
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -188,7 +188,7 @@ def new_tasting(username):
 
 
 @app.route('/<username>/tastings/<id_tasting>', methods=['GET', 'POST'])
-def profile(username, id_tasting):
+def tasting(username, id_tasting):
     try:
         with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
@@ -208,9 +208,13 @@ def profile(username, id_tasting):
             c.execute(query, (id_tasting,))
             conn.commit()
             result = c.fetchone()
+            query = "SELECT nombre FROM Local WHERE id = ?"
+            c.execute(query, (result["Local_id"],))
+            local = c.fetchone()[0]
+            image= base64.b64encode(result["foto"]).decode("utf-8")
 
     except sqlite3.OperationalError as e:
         print("Error:", e)
         return "Error 503 Service Unavailable.\nPlease try again later"
 
-    return render_template('tasting.html', result=result)
+    return render_template('tasting.html', result=result, image=image, local=local, username=username)
