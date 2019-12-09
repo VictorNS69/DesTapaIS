@@ -30,21 +30,6 @@
                                 <h4 style="color:#00b1b1;">{{result["nombre"]}} </h4></span>
 
                             </div>
-                            <div class="col-sm-6">
-                                <div align="center"><img alt="User Pic"
-                                                         src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg"
-                                                         id="profile-image1" class="img-circle img-responsive">
-
-                                    <input id="profile-image-upload" class="hidden" type="file">
-                                    <div style="color:#999;">jojojo</div>
-                                    <!--Upload Image Js And Css-->
-
-                                </div>
-
-                                <br>
-
-                                <!-- /input-group -->
-                            </div>
 
                             <div class="clearfix"></div>
                             <hr style="margin:5px 0 5px 0;">
@@ -82,12 +67,10 @@
         $('#profile-image-upload').click();
     });
 });
-
         </script>
     </div>
 </div>
 <style>
-
 body{
         background-image: url("{{ url_for('static', filename='images/bg_pic.jpg') }}");
         background-size:cover;
@@ -95,8 +78,6 @@ body{
         margin-right: auto;
         display:block;
 }
-
-
 input.hidden {
     position: absolute;
     left: -9999px;
