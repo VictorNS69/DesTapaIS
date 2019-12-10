@@ -1,4 +1,4 @@
-import sqlite3, datetime
+import sqlite3, datetime, base64
 from src import app, DB_PATH, functions
 from flask import render_template, request, redirect, url_for, json
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -200,6 +200,38 @@ def new_tasting(username):
         locales.append(local[0])
     return render_template('new_tasting.html', username=username, locales=locales)
 
+  
+@app.route('/<username>/tastings/<id_tasting>', methods=['GET', 'POST'])
+def tasting(username, id_tasting):
+    try:
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            if request.method == 'POST':
+                query = "SELECT id FROM Usuario WHERE username = ? "
+                c.execute(query, (username,))
+                conn.commit()
+                id_user = c.fetchone()[0]
+                query = "INSERT INTO 'Favorito_degustacion' ('Usuario_id', 'Degustacion_id', 'fecha') VALUES (?, ?, ?)"
+                data_tuple = (id_user, id_tasting, str(datetime.datetime.now()))
+                c.execute(query, data_tuple)
+                conn.commit()
+                return redirect(url_for('homepage', username=username))
+            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+            query = "SELECT * FROM Degustacion WHERE id = ? "
+            c.execute(query, (id_tasting,))
+            conn.commit()
+            result = c.fetchone()
+            query = "SELECT nombre FROM Local WHERE id = ?"
+            c.execute(query, (result["Local_id"],))
+            local = c.fetchone()[0]
+            image= base64.b64encode(result["foto"]).decode("utf-8")
+
+    except sqlite3.OperationalError as e:
+        print("Error:", e)
+        return "Error 503 Service Unavailable.\nPlease try again later"
+    return render_template('tasting.html', result=result, image=image, local=local, username=username)
+
 
 @app.route('/<username>/locals/<id_local>', methods=['GET', 'POST'])
 def local(username, id_local):
@@ -227,7 +259,7 @@ def local(username, id_local):
         return "Error 503 Service Unavailable.\nPlease try again later"
     return render_template('local.html', result=result)
 
-
+  
 @app.route('/<string:username>/search', methods=['GET', 'POST'])
 def search(username):
     if request.method == 'POST':
