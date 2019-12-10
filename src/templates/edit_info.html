@@ -1,40 +1,52 @@
 <!DOCTYPE html>
 
 <head>
-    <link rel="stylesheet" type="text/css" href="../static/css/edit_profile.css">
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/edit_info.css">
 </head>
 
 <body>
     <div class="form_box">
-        <form method="POST">
+        <form method="POST" enctype="multipart/form-data">
+            <div class="row" align="center">
+                <img alt="User Pic" src="data:;base64,{{ image }}" id="profile-image1"
+                    class="img-circle img-responsive">
+
+                <input id="profile-image-upload" class="hidden" type="file" onchange="readURL(this);" name="image"
+                    accept="image/*">
+                <!--Upload Image Js And Css-->
+
+            </div>
             <div class="row">
                 <label for="username"> Username: </label>
                 <input type="text" id="username" name="username" value={{data.username}} required>
             </div>
             <div class="row">
                 <label for="name"> First name: </label>
-                <input type="text" id="name" name="name" value="{{data.nombre}}">
+                <input type="text" id="name" name="firstname" value="{{data.nombre}}">
             </div>
             <div class="row">
                 <label for="last_name"> Last name: </label>
-                <input type="text" id="last_name" name="last_name" value={{data.apellidos}}>
+                <input type="text" id="last_name" name="lastname" value={{data.apellidos}}>
             </div>
             <div class="row">
                 <label for="email"> Email: </label>
-                <input type="email" id="email" name="user_email" value={{data.email}} required>
+                <input type="email" id="email" name="email" value={{data.email}} required>
             </div>
-            <div class="row">
+            <div class="row" oninput="showConfirm()">
                 <label for="password"> New password: </label>
                 <input type="password" id="password" name="password">
             </div>
-            <div class="row">
-                <label for="confirm_password"> Confirm new password</label>
+            <div class="row" style="display: none;" id="confirm_password_row">
+                <label for="confirm_password"> Confirm new password: </label>
                 <input type="password" id="confirm_password" name="confirm_password">
             </div>
+            <script src="{{ url_for('static', filename='js/validatePw.js') }}"></script>
             <div class="row">
                 <label for="description"> Description: </label>
                 <textarea class="text_area" type="text" id="description"
-                    name="user_descripcion">{{data.descripcion}}</textarea>
+                    name="description">{{data.descripcion}}</textarea>
             </div>
 
             <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css"
@@ -42,6 +54,7 @@
             <link rel="stylesheet" type="text/css" media="screen"
                 href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
             <div class="row" id="datetimepicker" class="input-append date" aria-required="true">
+                <label for="description"> Birthday: </label>
                 <input type="text" id="date" name="date" required value={{data.fecha_nacimiento}} />
                 <span class="add-on">
                     <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
@@ -65,6 +78,7 @@
                 });
             </script>
             <div class="row">
+                <label for="description"> Country: </label>
                 <select id="country" name="country" aria-selected={{data.pais}}>
                     <option value="Afganistan">Afghanistan</option>
                     <option value="Albania">Albania</option>
@@ -314,14 +328,71 @@
                     <option value="Zimbabwe">Zimbabwe</option>
                 </select>
             </div>
-            <div class="form-group">
-                <button type="submit">Aceptar</button>
+            <div class="row">
+                <label class="radio-inline">
+                    <input type="radio" name="sex" id="sex0" value="None" />
+                    Other/Prefer not to say it
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="sex" id="sex1" value="male" />
+                    Male
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="sex" id="sex2" value="female" />
+                    Female
+                </label>
             </div>
             <div class="form-group">
-                <button type="cancel">Cancelar</button>
+                <button class="cancel" type="button" onclick="location.href='/{{ username }}/profile';">Cancel</button>
+                <button class="accept" type="submit">Save</button>
             </div>
         </form>
     </div>
 </body>
+
+<script>
+    function showConfirm() {
+        var confirm = document.getElementById("confirm_password_row");
+        var password = document.getElementById("password");
+        if (!password.value) {
+            confirm.style.display = "none";
+        } else {
+            if (confirm.style.display === "none") {
+                confirm.style.display = "block";
+            }
+        }
+    }
+</script>
+
+<script>
+    $(function () {
+        $('#profile-image1').on('click', function () {
+            $('#profile-image-upload').click();
+        });
+    });
+
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#profile-image1')
+                    .attr('src', e.target.result)
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+   window.onload = function selectSex() {
+        console.log("{{data.sex}}")
+        var radiobtns = document.getElementsByName("sex");
+        for (var x = 0; x < radiobtns.length; x++)
+            if (radiobtns[x].value == "{{data.sex}}")
+                radiobtns[x].checked = true;
+    }
+
+</script>
 
 </html>

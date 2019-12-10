@@ -5,52 +5,52 @@
 <!------ Include the above in your HEAD tag ---------->
 <title>Sign up</title>
 
-<div class="container" >
-    <img src ="{{ url_for('static', filename='images/Logo_DesTapaIS_fondo.png') }}"
-         alt = "DesTapaIS Logo" height="300" width="300" />
+<div class="container">
+    <img src="{{ url_for('static', filename='images/Logo_DesTapaIS_fondo.png') }}" alt="DesTapaIS Logo" height="300"
+        width="300" />
     <div class="row">
         <div class="col-xs-12 col-sm-12 col-md-4 well well-sm">
             <legend align="center">Sign up!!</legend>
 
-            <form  method="POST"  enctype="multipart/form-data">
-                <input class="form-control" name="username" placeholder="Your Username" type="text" required autofocus/>
-                <input class="form-control" name="firstname" placeholder="First Name" type="text"/>
-                <input class="form-control" name="lastname" placeholder="Last Name" type="text"/>
-                <input class="form-control" name="email" placeholder="Your Email" type="email" required/>
+            <form method="POST" enctype="multipart/form-data">
+                <input class="form-control" name="username" placeholder="Your Username" type="text" required
+                    autofocus />
+                <input class="form-control" name="firstname" placeholder="First Name" type="text" />
+                <input class="form-control" name="lastname" placeholder="Last Name" type="text" />
+                <input class="form-control" name="email" placeholder="Your Email" type="email" required />
                 <input class="form-control" id="password" name="password" placeholder="New Password" type="password"
-                       required/>
+                    required />
                 <input class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password"
-                       type="password" required/>
+                    type="password" required />
                 <script src="{{ url_for('static', filename='js/validatePw.js') }}"></script>
 
                 <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css"
-                      rel="stylesheet">
+                    rel="stylesheet">
                 <link rel="stylesheet" type="text/css" media="screen"
-                      href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+                    href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
 
                 <div id="datetimepicker" class="input-append date" aria-required="true">
-                    <input type="text" id="date" name="date" required placeholder="Select your birth date"/>
+                    <input type="text" id="date" name="date" required placeholder="Select your birth date" />
                     <span class="add-on">
-                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
                     </span>
                 </div>
-                <script type="text/javascript"
-                        src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js">
+                <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js">
                 </script>
                 <script type="text/javascript"
-                        src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js">
-                </script>
+                    src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js">
+                    </script>
                 <script type="text/javascript"
-                        src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
-                </script>
+                    src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
+                    </script>
                 <script type="text/javascript"
-                        src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-SP.js">
-                </script>
+                    src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-SP.js">
+                    </script>
                 <script type="text/javascript">
-                      $('#datetimepicker').datetimepicker({
+                    $('#datetimepicker').datetimepicker({
                         format: 'yyyy/MM/dd',
                         language: 'pt-SP'
-                      });
+                    });
                 </script>
                 <select id="country" name="country">
                     <option value="None" selected>Select your country</option>
@@ -303,27 +303,28 @@
                 </select>
                 <p></p>
                 <label class="radio-inline">
-                    <input checked type="radio" name="sex" id="sex0" value="None"/>
+                    <input checked type="radio" name="sex" id="sex0" value="None" />
                     Other/Prefer not to say it
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="sex" id="sex1" value="male"/>
+                    <input type="radio" name="sex" id="sex1" value="male" />
                     Male
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="sex" id="sex2" value="female"/>
+                    <input type="radio" name="sex" id="sex2" value="female" />
                     Female
                 </label>
                 <p></p>
-                <textarea id="description" name="description" rows="4" cols="200" placeholder="Write about yourself"></textarea>
+                <textarea id="description" name="description" rows="4" cols="200"
+                    placeholder="Write about yourself"></textarea>
                 <p></p>
 
                 <div class="form-group">
-                  <label>Select image</label>
-                  <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="image" id="image" accept="image/*">
-                    <label class="custom-file-label" for="image"></label>
-                  </div>
+                    <label>Select image</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="image" id="image" accept="image/*">
+                        <label class="custom-file-label" for="image"></label>
+                    </div>
                 </div>
                 <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">
                     Sign up
@@ -334,10 +335,10 @@
     </div>
 </div>
 <style>
-   body{
+    body {
         background-image: url("{{ url_for('static', filename='images/wallpaper_spag.jpg') }}");
-        display:block;
-          margin-left: auto;
+        display: block;
+        margin-left: auto;
         margin-right: auto;
     }
 </style>

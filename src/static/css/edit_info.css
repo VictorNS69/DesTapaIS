@@ -1,0 +1,99 @@
+body {
+    background-image: url("../images/wallpaper_spag.jpg");
+    display: block;
+}
+
+form {
+    overflow: auto;
+    padding: 30px;
+}
+div .form-group {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.text_area {
+    width: 300px;
+    height: 80px;
+}
+
+.form_box{
+    background-color: white;
+    width: 40%;
+    min-width: 350px;
+    margin-left: 40px;
+    margin-top: 40px;
+    border-radius: 25px;
+}
+
+.row {
+    margin-left: 10px !important;
+    overflow: hidden;
+}
+
+.div {
+    width: 100%;
+}
+
+label {
+    text-align: right;
+    width: 25%;
+    margin-right: 10px;
+    float: left !important;
+}
+
+input {
+    width: 60% !important;
+    float: left !important;
+}
+
+textarea {
+    width: 60% !important;
+    min-height: 20px;
+}
+
+.custom-file-input {
+    width: auto !important;
+}
+
+select {
+    width: 60% !important;
+    float: left !important;
+    height: 32px !important;  
+}
+
+.cancel {
+    color: red;
+    width: 20%;
+    min-width: 80px;
+    margin-right: 5%;
+    overflow: hidden;
+}
+
+.accept {
+    color: green;
+    width: 20%;
+    min-width: 80px;
+    margin-left: 5%;
+}
+
+.img-circle {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    background-size: cover;
+    width:150px;
+    height:150px;
+    margin-bottom: 5%;
+    cursor: pointer;
+    border: 2px solid #03b1ce;
+}
+
+div .radio-inline {
+    display: inline-block !important;
+    padding-left: 20px !important;
+    margin-bottom: 0 !important;
+    font-weight: normal !important;
+    vertical-align: middle !important;
+    cursor: pointer !important;
+}
