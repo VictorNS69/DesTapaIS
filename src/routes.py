@@ -64,7 +64,7 @@ def sign_in():
                 if image:
                     blob = image.read()
                 else:
-                    path = url_for('static', filename='images/avatar.jpg')
+                    path = "./src/static/images/default_image.jpg"
                     image = open(path, "rb")
                     blob = image.read()
                 verified = 0
@@ -105,57 +105,70 @@ def sign_in():
 
 @app.route('/<username>/edit_info', methods=['GET', 'POST'])
 def edit_info(username):
-    user_id = 0
+
     if request.method == 'GET':
         with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
-            cursor = conn.cursor
+            c = conn.cursor()
             query = "SELECT * FROM 'Usuario' WHERE username=?"
-            cursor = conn.execute(query, [username])
-            data = cursor.fetchone()
+            c.execute(query, [username])
+            data = c.fetchone()
             image = b64encode(data["foto"]).decode("utf-8")
             username = data["username"]
             user_id = data["id"]
-            return render_template('edit_info.html', data=data, image=image, username=username)
+            return render_template('edit_info.html', data=data, image=image, username=username, user_id=user_id)
     elif request.method == 'POST':
         with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
             c = conn.cursor()
             data = request.form
+            if(data["username"] != data["original_username"]):
+                query = "SELECT * FROM 'Usuario' WHERE username='{}'".format(data["username"])
+                c.execute(query)
+                res = c.fetchone()
+                if(res):
+                    return render_template('user_already_exists.html', old_username=data["original_username"], new_username=data["username"])
+            if(data["email"] != data["original_email"]):
+                query = "SELECT * FROM 'Usuario' WHERE email='{}'".format(data["email"])
+                c.execute(query)
+                res = c.fetchone()
+                if(res):
+                    return render_template('email_already_in_use.html', email=data["email"], username=data["username"])
             date = functions.date_validator(
                 str(data["date"]).replace("/", "-"))
             if not date:
                 return render_template('age_error.html')
             else:
+                user_id=data["id"]
                 image = request.files["image"]
                 blob = None
                 if image:
                     blob = image.read()
-
                     if data["password"]:
-                        query = "UPDATE 'Usuario' SET 'username'=?, 'contrasena'=?, 'email'= ?, 'fecha_nacimiento'=?, 'nombre'=?," \
-                            "'apellidos'=?, 'pais'=?, 'descripcion'=?, 'genero'=?, 'foto'=? WHERE 'id'=?;"
+                        query = """UPDATE Usuario SET username=?, contrasena=?, email= ?, fecha_nacimiento=?, nombre=?, 
+                        apellidos=?, pais=?, descripcion=?, genero=?, foto=? WHERE id=?;"""
 
                         data_tuple = (data["username"], generate_password_hash(data["password"]), data["email"],
                                       str(data["date"]), data["firstname"], data["lastname"], data["country"],
                                       data["description"], data["sex"], blob, user_id)
                     else:
-                        query = "UPDATE 'Usuario' SET 'username'=?, 'email'= ?, 'fecha_nacimiento'=?, 'nombre'=?," \
-                            "'apellidos'=?, 'pais'=?, 'descripcion'=?, 'genero'=?, 'foto'=? WHERE 'id'=?;"
+                        query = """UPDATE Usuario SET username=?, email= ?, fecha_nacimiento=?, nombre=?, 
+                        apellidos=?, pais=?, descripcion=?, genero=?, foto=? WHERE id=?;"""
 
                         data_tuple = (data["username"], data["email"],
                                       str(data["date"]), data["firstname"], data["lastname"], data["country"],
                                       data["description"], data["sex"], blob, user_id)
                 else:
                     if data["password"]:
-                        query = "UPDATE 'Usuario' SET 'username'=?, 'contrasena'=?, 'email'= ?, 'fecha_nacimiento'=?, 'nombre'=?," \
-                            "'apellidos'=?, 'pais'=?, 'descripcion'=?, 'genero'=? WHERE 'id'=?;"
+                        query = """UPDATE Usuario SET username=?, contrasena=?, email= ?, fecha_nacimiento=?, nombre=?, 
+                        apellidos=?, pais=?, descripcion=?, genero=? WHERE id=?;"""
 
                         data_tuple = (data["username"], generate_password_hash(data["password"]), data["email"],
                                       str(data["date"]), data["firstname"], data["lastname"], data["country"],
                                       data["description"], data["sex"], user_id)
                     else:
-                        query = "UPDATE 'Usuario' SET 'username'=?, 'email'= ?, 'fecha_nacimiento'=?, 'nombre'=?," \
-                            "'apellidos'=?, 'pais'=?, 'descripcion'=?, 'genero'=? WHERE 'id'=?;"
+                        query = """UPDATE Usuario SET username = ?, email= ?, fecha_nacimiento=?, nombre = ?, 
+                        apellidos=?, pais=?, descripcion=?, genero=? WHERE id=?;"""
 
                         data_tuple = (data["username"], data["email"],
                                       str(data["date"]), data["firstname"], data["lastname"], data["country"],
