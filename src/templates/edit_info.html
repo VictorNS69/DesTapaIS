@@ -9,6 +9,9 @@
 <body>
     <div class="form_box">
         <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{{user_id}}">
+            <input type="hidden" name="original_username" value="{{data.username}}">
+            <input type="hidden" name="original_email" value="{{data.email}}">
             <div class="row" align="center">
                 <img alt="User Pic" src="data:;base64,{{ image }}" id="profile-image1"
                     class="img-circle img-responsive">
@@ -79,7 +82,7 @@
             </script>
             <div class="row">
                 <label for="description"> Country: </label>
-                <select id="country" name="country" aria-selected={{data.pais}}>
+                <select id="country" name="country" selected={{data.pais}}>
                     <option value="Afganistan">Afghanistan</option>
                     <option value="Albania">Albania</option>
                     <option value="Algeria">Algeria</option>
@@ -385,11 +388,11 @@
         }
     }
 
-   window.onload = function selectSex() {
-        console.log("{{data.sex}}")
+    window.onload = function selectSex() {
+        console.log("{{data.genero}}")
         var radiobtns = document.getElementsByName("sex");
         for (var x = 0; x < radiobtns.length; x++)
-            if (radiobtns[x].value == "{{data.sex}}")
+            if (radiobtns[x].value == "{{data.genero}}")
                 radiobtns[x].checked = true;
     }
 
