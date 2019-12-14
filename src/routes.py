@@ -116,7 +116,7 @@ def profile(username):
         print("Error:", e)
         return "Error 503 Service Unavailable.\nPlease try again later"
 
-    return render_template('userprofile.html', result=result, image=image)
+    return render_template('userprofile.html', username=username, result=result, image=image)
 
 
 @app.route('/<string:username>/home')
