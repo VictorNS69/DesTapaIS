@@ -5,6 +5,7 @@
     {% block user %}{{username}}{% endblock %}
     {% block user2 %}{{username}}{% endblock %}
     {% block user3 %}{{username}}{% endblock %}
+    {% block user4 %}{{username}}{% endblock %}
 </div>
 <html>
 <head>
@@ -34,11 +35,9 @@
                             </div>
                             <div class="col-sm-6">
                                 <div align="center"><img alt="User Pic"
-                                                         src="https://x1.xingassets.com/assets/frontend_minified/img/users/nobody_m.original.jpg"
+                                                         src="data:;base64,{{ image}}"
                                                          id="profile-image1" class="img-circle img-responsive">
 
-                                    <input id="profile-image-upload" class="hidden" type="file">
-                                    <div style="color:#999;">click here to change profile image</div>
                                     <!--Upload Image Js And Css-->
 
                                 </div>

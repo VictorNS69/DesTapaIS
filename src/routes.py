@@ -100,12 +100,13 @@ def profile(username):
             c.execute(query, (username,))
             conn.commit()
             result = c.fetchone()
+            image = b64encode(result[-4]).decode("utf-8")
 
     except sqlite3.OperationalError as e:
         print("Error:", e)
         return "Error 503 Service Unavailable.\nPlease try again later"
 
-    return render_template('userprofile.html', result=result)
+    return render_template('userprofile.html', result=result, image=image)
 
 
 @app.route('/<string:username>/home')
