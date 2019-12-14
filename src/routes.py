@@ -34,10 +34,8 @@ def login():
                     return render_template("wrong_pw.html")
 
             except sqlite3.IntegrityError as e:
-                print("Error:", e)
                 return e  # render_template('error_sign_in.html', name=details["username"], email=details["email"])
             except sqlite3.OperationalError as e:
-                print("Error:", e)
                 return e  # "Error 503 Service Unavailable.\nPlease try again later"
 
     return render_template('login.html')
@@ -80,10 +78,8 @@ def sign_in():
                     return render_template('verify_yourself.html', username=details["username"])
 
                 except sqlite3.IntegrityError as e:
-                    print("Error:", e)
                     return render_template('error_sign_in.html', name=details["username"], email=details["email"])
                 except sqlite3.OperationalError as e:
-                    print("Error:", e)
                     return "Error 503 Service Unavailable.\nPlease try again later"
 
     return render_template('sign_up.html')
@@ -113,7 +109,6 @@ def profile(username):
             image = b64encode(result[-4]).decode("utf-8")
 
     except sqlite3.OperationalError as e:
-        print("Error:", e)
         return "Error 503 Service Unavailable.\nPlease try again later"
 
     return render_template('userprofile.html', username=username, result=result, image=image)
@@ -147,10 +142,7 @@ def new_local(username):
             c = conn.cursor()
             c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
             details = request.form
-            print(details)
-            print("username: "+username)
             query = "SELECT id FROM Usuario WHERE username='{}'".format(username)
-            print("query: "+query)
             c.execute(query)
             id_user = c.fetchone()[0]
             query = "INSERT INTO Local (nombre, direccion, resena, Usuario_id) VALUES (?, ?, ?, ?)"
@@ -160,7 +152,6 @@ def new_local(username):
                 conn.commit()
                 return redirect(url_for('new_tasting', username=username))
             except sqlite3.IntegrityError as e:
-                print("Error:", e)
                 return render_template('local_already_exists.html', username=username)
 
     return render_template('new_local.html', username=username)
@@ -280,7 +271,6 @@ def tasting(username, id_tasting):
             image= base64.b64encode(result["foto"]).decode("utf-8")
 
     except sqlite3.OperationalError as e:
-        print("Error:", e)
         return "Error 503 Service Unavailable.\nPlease try again later"
     return render_template('tasting.html', result=result, image=image, local=local, username=username)
 
@@ -315,7 +305,6 @@ def local(username, id_local):
         conn.commit()
         result = c.fetchone()
     except sqlite3.OperationalError as e:
-        print("Error:", e)
         return "Error 503 Service Unavailable.\nPlease try again later"
     return render_template('local.html', username=username, result=result)
 
