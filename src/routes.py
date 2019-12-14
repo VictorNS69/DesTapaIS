@@ -2,6 +2,7 @@ import sqlite3, datetime, base64
 from src import app, DB_PATH, functions
 from flask import render_template, request, redirect, url_for, json
 from werkzeug.security import generate_password_hash, check_password_hash
+from base64 import b64encode
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -20,7 +21,6 @@ def login():
             try:
                 c.execute(query)
                 result = c.fetchone()
-                print("result", result)
                 if result is None:
                     return render_template("user_not_exist.html")
 
@@ -320,3 +320,15 @@ def verification(username):
         c.fetchone()
     return redirect(url_for('login', username=username))
 
+
+@app.route('/<string:username>/most_valued_tastings', methods=['GET'])
+def most_valued_tastings(username):
+    with sqlite3.connect(DB_PATH) as conn:
+        c = conn.cursor()
+        query = "SELECT * FROM Degustacion INNER JOIN Valoracion ON Valoracion.Degustacion_id=Degustacion.id " \
+                "ORDER BY Valoracion.valor DESC"
+        c.execute(query)
+        degustaciones = c.fetchall()
+        images = []
+        [images.append(b64encode(d[-7]).decode("utf-8") if d[-7] else None) for d in degustaciones]
+        return render_template('most_valued_tastings.html', username=username, degustaciones=degustaciones, foto=images)
