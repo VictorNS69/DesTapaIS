@@ -1,5 +1,7 @@
 import datetime
 import smtplib
+import sqlite3
+from . import exceptions as E
 
 
 def date_validator(date):
@@ -40,3 +42,22 @@ def send_email(from_address, to_address, cc_address,
     problems = server.sendmail(from_address, to_address, msg)
     server.quit()
     return problems
+
+
+def verified_user(db_path, username):
+    with sqlite3.connect(db_path) as conn:
+        c = conn.cursor()
+        c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+        query = "SELECT * FROM Usuario WHERE username='{}'".format(username)
+        try:
+            c.execute(query)
+            result = c.fetchone()
+            if result is None:
+                raise E.UserNotExist()
+
+            if result[-1] == 0:
+                raise E.UserNOtVerified()
+        except sqlite3.IntegrityError as e:
+            return e
+        except sqlite3.OperationalError as e:
+            return e

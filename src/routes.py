@@ -1,5 +1,5 @@
 import sqlite3, datetime, base64
-from src import app, DB_PATH, functions
+from src import app, DB_PATH, functions, exceptions
 from flask import render_template, request, redirect, url_for, json
 from werkzeug.security import generate_password_hash, check_password_hash
 from base64 import b64encode
@@ -91,6 +91,14 @@ def sign_in():
 
 @app.route('/<string:username>/profile', methods=['GET', 'POST'])
 def profile(username):
+    try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
     if request.method == "POST":
         return redirect(url_for('edit_info', username=username))
     try:
@@ -113,11 +121,27 @@ def profile(username):
 
 @app.route('/<string:username>/home')
 def homepage(username):
+    try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
     return render_template('homepage.html', username=username)
 
 
 @app.route('/<string:username>/new_local',  methods=['GET', 'POST'])
 def new_local(username):
+    try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
     if request.method == "POST":
         with sqlite3.connect(DB_PATH) as conn:
             c = conn.cursor()
@@ -144,11 +168,27 @@ def new_local(username):
 
 @app.route('/<username>/friends', methods=['GET', 'POST'])
 def amigos(username):
+    try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
     return render_template('friends.html')
 
 
 @app.route('/<string:username>/new_tasting', methods=['GET', 'POST'])
 def new_tasting(username):
+    try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
     with sqlite3.connect(DB_PATH) as conn:
         c = conn.cursor()
     if request.method == 'POST':
@@ -208,6 +248,14 @@ def new_tasting(username):
 @app.route('/<username>/tastings/<id_tasting>', methods=['GET', 'POST'])
 def tasting(username, id_tasting):
     try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
+    try:
         with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
@@ -240,6 +288,14 @@ def tasting(username, id_tasting):
 @app.route('/<username>/locals/<id_local>', methods=['GET', 'POST'])
 def local(username, id_local):
     try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
+    try:
         with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
@@ -266,6 +322,14 @@ def local(username, id_local):
   
 @app.route('/<string:username>/search', methods=['GET', 'POST'])
 def search(username):
+    try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
     if request.method == 'POST':
         return redirect(url_for('search_list', username=username, request=json.dumps(request.form)))
     return render_template('search.html', username=username)
@@ -273,6 +337,14 @@ def search(username):
 
 @app.route('/<string:username>/search_list/<request>', methods=['GET', 'POST'])
 def search_list(username, request):
+    try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
     with sqlite3.connect(DB_PATH) as conn:
         c = conn.cursor()
         req = json.loads(request)
@@ -303,6 +375,14 @@ def search_list(username, request):
 
 @app.route('/<string:username>/help', methods=['GET', 'POST'])
 def help(username):
+    try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
     if request.method == 'POST':
         return render_template('thank_you.html', username=username)
 
@@ -326,6 +406,14 @@ def verification(username):
 
 @app.route('/<string:username>/most_valued_tastings', methods=['GET'])
 def most_valued_tastings(username):
+    try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
     with sqlite3.connect(DB_PATH) as conn:
         c = conn.cursor()
         query = "SELECT * FROM Degustacion INNER JOIN Valoracion ON Valoracion.Degustacion_id=Degustacion.id " \
