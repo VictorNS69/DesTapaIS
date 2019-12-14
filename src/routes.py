@@ -89,8 +89,10 @@ def sign_in():
     return render_template('sign_up.html')
 
 
-@app.route('/<string:username>/profile', methods=['GET'])
+@app.route('/<string:username>/profile', methods=['GET', 'POST'])
 def profile(username):
+    if request.method == "POST":
+        return redirect(url_for('edit_info', username=username))
     try:
         with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
