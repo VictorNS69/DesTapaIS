@@ -317,7 +317,7 @@ def local(username, id_local):
     except sqlite3.OperationalError as e:
         print("Error:", e)
         return "Error 503 Service Unavailable.\nPlease try again later"
-    return render_template('local.html', result=result)
+    return render_template('local.html', username=username, result=result)
 
   
 @app.route('/<string:username>/search', methods=['GET', 'POST'])
