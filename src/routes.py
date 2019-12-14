@@ -423,3 +423,14 @@ def most_valued_tastings(username):
         images = []
         [images.append(b64encode(d[-7]).decode("utf-8") if d[-7] else None) for d in degustaciones]
         return render_template('most_valued_tastings.html', username=username, degustaciones=degustaciones, foto=images)
+
+
+# Error definition
+@app.errorhandler(404)
+def page_not_found(error):
+    return render_template('404_error_page.html')
+
+
+@app.errorhandler(Exception)
+def exception_handler(error):
+    return render_template('something_broke.html')
