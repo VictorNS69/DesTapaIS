@@ -89,8 +89,10 @@ def sign_in():
     return render_template('sign_up.html')
 
 
-@app.route('/<string:username>/profile', methods=['GET'])
+@app.route('/<string:username>/profile', methods=['GET', 'POST'])
 def profile(username):
+    if request.method == "POST":
+        return redirect(url_for('edit_info', username=username))
     try:
         with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
@@ -100,12 +102,13 @@ def profile(username):
             c.execute(query, (username,))
             conn.commit()
             result = c.fetchone()
+            image = b64encode(result[-4]).decode("utf-8")
 
     except sqlite3.OperationalError as e:
         print("Error:", e)
         return "Error 503 Service Unavailable.\nPlease try again later"
 
-    return render_template('userprofile.html', result=result)
+    return render_template('userprofile.html', result=result, image=image)
 
 
 @app.route('/<string:username>/home')
