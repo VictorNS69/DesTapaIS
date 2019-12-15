@@ -169,7 +169,7 @@ def new_local(username):
             try:
                 c.execute(query, data_tuple)
                 conn.commit()
-                return redirect(url_for('new_tasting', username=username))
+                return redirect(url_for('homepage', username=username))
             except sqlite3.IntegrityError as e:
                 return render_template('local_already_exists.html', username=username)
 
