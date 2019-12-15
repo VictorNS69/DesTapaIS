@@ -14,48 +14,83 @@
 </head>
 <body >
 <div id="contenedor">
-    <input id="tab-1" type="radio" name="radio-set" class="tab-selector-1" checked="checked" />
-    <label for="tab-1" class="tab-label-1">Actividades recientes</label>
+    <!--input id="tab-1" type="radio" name="radio-set" class="tab-selector-1" checked="checked" />
+    <label for="tab-1" class="tab-label-1">Actividades recientes</label-->
 
-    <input id="tab-2" type="radio" name="radio-set" class="tab-selector-2" onclick="location.href='/{{username}}/profile';"/>
-    <label for="tab-2" class="tab-label-2">Resumen de perfil</label>
+    <input id="tab-2" type="radio" name="radio-set" class="tab-selector-2" checked/>
+    <label for="tab-2" class="tab-label-2">My Profile</label>
 
     <input id="tab-3" type="radio" name="radio-set" class="tab-selector-3" />
-    <label for="tab-3" class="tab-label-3">Comidas y locales favoritos</label>
+    <label for="tab-3" class="tab-label-3">Tastings and foods</label>
 
-    <input id="tab-4" type="radio" name="radio-set" class="tab-selector-4" />
-    <label for="tab-4" class="tab-label-4">Últimos Galardones</label>
+    <!--input id="tab-4" type="radio" name="radio-set" class="tab-selector-4" />
+    <label for="tab-4" class="tab-label-4">Últimos Galardones</label-->
 
     <input id="tab-5" type="radio" name="radio-set" class="tab-selector-5" />
-    <label for="tab-5" class="tab-label-5">Fotos de degustaciones</label>
+    <label for="tab-5" class="tab-label-5">Most valued tastings</label>
 
-    <input id="tab-6" type="radio" name="radio-set" class="tab-selector-6" />
-    <label for="tab-6" class="tab-label-6">Amigos agregados</label>
+    <!--input id="tab-6" type="radio" name="radio-set" class="tab-selector-6" />
+    <label for="tab-6" class="tab-label-6">Amigos agregados</label-->
 
     <input id="tab-7" type="radio" name="radio-set" class="tab-selector-7" />
-    <label for="tab-7" class="tab-label-7">Locales favoritos</label>
+    <label for="tab-7" class="tab-label-7">Locals</label>
 
     <div class="content">
         <div class="content-1">
             Contenido1
         </div>
         <div class="content-2">
-            Contenido2
+            <center><strong><u><tt>Here you can see a summary of your profile</tt></u></strong> <br></center>
+            <strong>Username: </strong>{{user[0]["username"]}}<br>
+            <strong>Name:</strong> {{user[0]["nombre"]}}<br>
+            <strong>Surname:</strong> {{user[0]["apellido"]}}<br>
+            <strong>email: </strong>{{user[0]["email"]}}<br>
+            <img alt="Profile pic" src="data:;base64,{{ user[1] }}" class="img-square img-responsive" height="350" width="350">
+            <br><br>
+            <a class="btn btn-primary btn-lg" href="profile" role="button" >Profile</a>
         </div>
         <div class="content-3">
-            Contenido3
+            <center><strong><u><tt>Here you can see 5 tastings</tt></u></strong> <br></center>
+            {% for d in  tastings%}
+            <strong>Name:</strong> {{d["nombre"]}}<br>
+            <strong>Description:</strong> {{d["descripcion"]}}<br>
+            <strong>Valoration:</strong> {{d[14]}}<br>
+            <br>
+            {% endfor %}
+            <a class="btn btn-primary btn-lg" href="most_valued_tastings" role="button" >Most valued tastings</a>
+            <a class="btn btn-primary btn-lg" href="new_tasting" role="button" >New Tasting</a>
+
         </div>
         <div class="content-4">
             Contenido4
         </div>
         <div class="content-5">
-            Contenido5
+            <center><strong><u><tt>Here you can see the 5 most valued tastings</tt></u></strong> <br></center>
+            {% for d in  most_valued_tastings%}
+            <strong>Name:</strong> {{d["nombre"]}}<br>
+            <strong>Description:</strong> {{d["descripcion"]}}<br>
+            <strong>Valoration:</strong> {{d[14]}}<br>
+            <br>
+            {% endfor %}
+            <br>
+            <a class="btn btn-primary btn-lg" href="most_valued_tastings" role="button" >See all</a>
+            <a class="btn btn-primary btn-lg" href="new_tasting" role="button" >New Tasting</a>
         </div>
         <div class="content-6">
             Contenido6
         </div>
         <div class="content-7">
-            Contenido7
+            <center><strong><u><tt>Here you can see 5 locals</tt></u></strong> <br></center>
+
+            {% for d in  locals%}
+            <strong>Name:</strong> {{d["nombre"]}}<br>
+            <strong>Address:</strong> {{d["direccion"]}}<br>
+            <strong>Abstract:</strong> {{d["resena"]}}<br>
+            <br>
+            {% endfor %}
+            <br>
+            <a class="btn btn-primary btn-lg" href="most_valued_tastings" role="button" >See all</a>
+            <a class="btn btn-primary btn-lg" href="new_local" role="button" >New Local</a>
         </div>
     </div>
 </div>

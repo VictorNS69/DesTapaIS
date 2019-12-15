@@ -123,8 +123,27 @@ def homepage(username):
 
     except exceptions.UserNOtVerified:
         return render_template("no_verification.html", username=username)
-
-    return render_template('homepage.html', username=username)
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        query = "SELECT * FROM Usuario WHERE username = ? "
+        c.execute(query, (username,))
+        conn.commit()
+        result = c.fetchone()
+        image = b64encode(result[-4]).decode("utf-8")
+        query = "SELECT * FROM Degustacion INNER JOIN Valoracion ON Valoracion.Degustacion_id=Degustacion.id " \
+                "ORDER BY Valoracion.valor LIMIT 4"
+        c.execute(query)
+        degustaciones = c.fetchall()
+        query = "SELECT * FROM Degustacion INNER JOIN Valoracion ON Valoracion.Degustacion_id=Degustacion.id " \
+                "ORDER BY Valoracion.valor DESC LIMIT 4"
+        c.execute(query)
+        mvtastings = c.fetchall()
+        query = "SELECT * FROM Local LIMIT 4"
+        c.execute(query)
+        locals = c.fetchall()
+    return render_template('homepage.html', username=username, user=(result, image), tastings=degustaciones,
+                           most_valued_tastings=mvtastings, locals=locals)
 
 
 @app.route('/<string:username>/new_local',  methods=['GET', 'POST'])
@@ -422,4 +441,5 @@ def page_not_found(error):
 
 @app.errorhandler(Exception)
 def exception_handler(error):
+    print(error)
     return render_template('something_broke.html')
