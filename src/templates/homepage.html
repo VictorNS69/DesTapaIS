@@ -44,7 +44,7 @@
             <strong>Username: </strong>{{user[0]["username"]}}<br>
             <strong>Name:</strong> {{user[0]["nombre"]}}<br>
             <strong>Surname:</strong> {{user[0]["apellido"]}}<br>
-            <strong>email: </strong>{{user[0]["email"]}}<br>
+            <strong>email: </strong>{{user[0]["email"]}}<br><br>
             <img alt="Profile pic" src="data:;base64,{{ user[1] }}" class="img-square img-responsive" height="350" width="350">
             <br><br>
             <a class="btn btn-primary btn-lg" href="profile" role="button" >Profile</a>
@@ -85,11 +85,11 @@
             {% for d in  locals%}
             <strong>Name:</strong> {{d["nombre"]}}<br>
             <strong>Address:</strong> {{d["direccion"]}}<br>
-            <strong>Abstract:</strong> {{d["resena"]}}<br>
+            <strong>Description:</strong> {{d["resena"]}}<br>
             <br>
             {% endfor %}
             <br>
-            <a class="btn btn-primary btn-lg" href="most_valued_tastings" role="button" >See all</a>
+            <a class="btn btn-primary btn-lg" href="locals" role="button" >See all</a>
             <a class="btn btn-primary btn-lg" href="new_local" role="button" >New Local</a>
         </div>
     </div>

@@ -433,6 +433,25 @@ def most_valued_tastings(username):
         return render_template('most_valued_tastings.html', username=username, degustaciones=degustaciones, foto=images)
 
 
+@app.route('/<string:username>/locals', methods=['GET'])
+def locals(username):
+    try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        query = "SELECT * FROM Local"
+        c.execute(query)
+        locals = c.fetchall()
+        return render_template('locals.html', username=username, locals=locals)
+
+
 # Error definition
 @app.errorhandler(404)
 def page_not_found(error):
