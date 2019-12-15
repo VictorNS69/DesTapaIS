@@ -35,8 +35,8 @@
                             </div>
                             <div class="col-sm-6">
                                 <div align="center"><img alt="User Pic"
-                                                         src="data:;base64,{{ image}}"
-                                                         id="profile-image1" class="img-circle img-responsive">
+                                                         src="data:;base64,{{ image }}"
+                                                         id="profile-image1" class="img-square img-responsive">
 
                                     <!--Upload Image Js And Css-->
 
@@ -61,7 +61,7 @@
                             <div class="clearfix"></div>
                             <div class="bot-border"></div>
 
-                            <div class="col-sm-5 col-xs-6 tital ">Género:</div>
+                            <div class="col-sm-5 col-xs-6 tital ">Genre:</div>
                             <div class="col-sm-7">{{result["genero"]}}</div>
 
                             <div class="clearfix"></div>
@@ -98,17 +98,16 @@
             </div>
         </div>
         <script>
-              $(function() {
-    $('#profile-image1').on('click', function() {
-        $('#profile-image-upload').click();
-    });
-});
+            $(function() {
+                $('#profile-image1').on('click', function() {
+                    $('#profile-image-upload').click();
+                });
+            });
 
         </script>
     </div>
 </div>
 <style>
-
 body{
         background-image: url("{{ url_for('static', filename='images/bg_pic.jpg') }}");
         background-size:cover;
@@ -116,16 +115,12 @@ body{
         margin-right: auto;
         display:block;
 }
-
-
 input.hidden {
     position: absolute;
     left: -9999px;
     }
 #profile-image1 {
     cursor: pointer;
-    width: 100px;
-    height: 100px;
 	border:2px solid #03b1ce ;}
 	.tital{ font-size:16px; font-weight:500;}
 	.bot-border{ border-bottom:1px #f8f8f8 solid;  margin:5px 0  5px 0}
