@@ -51,6 +51,9 @@
         </div>
         <div class="content-3">
             <center><strong><u><tt>Here you can see 5 tastings</tt></u></strong> <br></center>
+            {% if not tastings %}
+            There isn't any tasting yet!<br>
+            {% endif %}
             {% for d in  tastings%}
             <strong>Name:</strong> {{d["nombre"]}}<br>
             <strong>Description:</strong> {{d["descripcion"]}}<br>
@@ -66,6 +69,9 @@
         </div>
         <div class="content-5">
             <center><strong><u><tt>Here you can see the 5 most valued tastings</tt></u></strong> <br></center>
+            {% if not most_valued_tastings %}
+            There isn't any tasting yet!<br>
+            {% endif %}
             {% for d in  most_valued_tastings%}
             <strong>Name:</strong> {{d["nombre"]}}<br>
             <strong>Description:</strong> {{d["descripcion"]}}<br>
@@ -81,7 +87,10 @@
         </div>
         <div class="content-7">
             <center><strong><u><tt>Here you can see 5 locals</tt></u></strong><br></center>
-            {% for d in  locals%}
+            {% if not locals %}
+            There isn't any local yet!<br>
+            {% endif %}
+            {% for d in  locals %}
             <strong>Name:</strong> {{d["nombre"]}}<br>
             <strong>Address:</strong> {{d["direccion"]}}<br>
             <strong>Description:</strong> {{d["resena"]}}<br>
