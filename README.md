@@ -12,8 +12,7 @@ galardones por completar actividades gastronómicas.
 
 Para más información, consulta el [enunciado](/documentacion/enunciado.pdf) de la práctica.
 
-### Nota
-**No se ha implementado toda la funcionalidad que propone el enunciado**. El objetivo principal de esta práctica era el poder manejar un proyecto "de verdad", elaborando los documentos pertinentes y planificando y dejando constancia de todo.
+> **Nota**: **No se ha implementado toda la funcionalidad que propone el enunciado**. El objetivo principal de esta práctica era el poder manejar un proyecto "de verdad", elaborando los documentos pertinentes y planificando y dejando constancia de todo.
 
 ## Releases
 En el apartado de [_releases_](https://github.com/VictorNS69/ISII-2019-2020/releases) podrás encontrar cada una de las versiones que ha tenido estre proyecto a lo largo de su desarrollo. Además, podrás encontrar en ellas la documentación de cada entrega, y las presentaciones que se han realizado.
