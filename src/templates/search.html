@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 
 <head>
@@ -13,13 +12,13 @@
         {% block user %}{{username}}{% endblock %}
         {% block user2 %}{{username}}{% endblock %}
         {% block user3 %}{{username}}{% endblock %}
+        {% block user4 %}{{username}}{% endblock %}
     </div>
     <title>Search</title>
     <div class="form-container">
         <form method="POST" enctype="multipart/form-data">
             <div class="comboContainer">
                 <select class="combo" id="category" name="category" required>
-                    <option value="None" selected>Select a category</option>
                     <option value="Degustacion">Tasting</option>
                     <option value="Usuario">Users</option>
                     <option value="Local">Locals</option>
@@ -36,5 +35,3 @@
     </div>
     {% endblock %}
 </body>
-
-</html>

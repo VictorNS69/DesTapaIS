@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block navbar %}
+{{super()}}
+<div style="visibility: hidden">
+    {% block user %}{{username}}{% endblock %}
+    {% block user2 %}{{username}}{% endblock %}
+    {% block user3 %}{{username}}{% endblock %}
+    {% block user4 %}{{username}}{% endblock %}
+</div>
+<title>Locals</title>
+<div class="list-group">
+    {% if not locals %}
+    There isn't any local yet!
+    {% endif %}
+    {% for e in locals %}
+    <a href="/{{username}}/locals/{{e[0]}}" class="list-group-item list-group-item-action flex-column align-items-start active">
+        <div class="d-flex w-100 justify-content-between">
+            <h3 class="mb-1">{{e["nombre"]}}</h3>
+            <strong>Description:</strong> {{e["resena"]}}
+            <br>
+            <strong>Address:</strong> {{e["direccion"]}}
+        </div>
+    </a>
+    <br>
+    {% endfor %}
+</div>
+{% endblock %}

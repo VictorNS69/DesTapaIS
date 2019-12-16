@@ -1,12 +1,25 @@
+{% extends "base.html" %}
+{% block navbar %}
+{{super()}}
+<div style="visibility: hidden">
+    {% block user %}{{username}}{% endblock %}
+    {% block user2 %}{{username}}{% endblock %}
+    {% block user3 %}{{username}}{% endblock %}
+</div>
 <!DOCTYPE html>
-
 <head>
     <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
     <link rel="stylesheet" type="text/css" href="../static/css/edit_info.css">
+    <script>
+        function selectCountry() {
+            document.getElementById("country").value = "{{data.pais}}";
+        }
+    </script>
 </head>
 
 <body>
+
     <div class="form_box">
         <form method="POST" enctype="multipart/form-data">
             <input type="hidden" name="id" value="{{user_id}}">
@@ -82,7 +95,7 @@
             </script>
             <div class="row">
                 <label for="description"> Country: </label>
-                <select id="country" name="country" selected={{data.pais}}>
+                <select id="country" name="country">
                     <option value="Afganistan">Afghanistan</option>
                     <option value="Albania">Albania</option>
                     <option value="Algeria">Algeria</option>
@@ -351,6 +364,7 @@
             </div>
         </form>
     </div>
+    <script>selectCountry()</script>
 </body>
 
 <script>
@@ -389,13 +403,13 @@
     }
 
     window.onload = function selectSex() {
-        console.log("{{data.genero}}")
         var radiobtns = document.getElementsByName("sex");
         for (var x = 0; x < radiobtns.length; x++)
             if (radiobtns[x].value == "{{data.genero}}")
                 radiobtns[x].checked = true;
     }
-
 </script>
 
+
 </html>
+{% endblock %}
