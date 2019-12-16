@@ -205,7 +205,12 @@ def new_tasting(username):
             c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
             details = request.form
             image = request.files["image"]
-            blob = image.read()
+            if image:
+                blob = image.read()
+            else:
+                path = "./src/static/images/default_food.png"
+                image = open(path, "rb")
+                blob = image.read()
             query = "SELECT nombre, Local_id FROM Degustacion"
             c.execute(query)
             tuplas = c.fetchall()
@@ -241,6 +246,7 @@ def new_tasting(username):
             for valor in valores:
                 suma += valor[0]
             valor_promedio = suma / len(valores)
+            valor_promedio = '%.3f'%valor_promedio
             query = "UPDATE 'Degustacion' SET 'valoracion_promedio'='{}'".format(valor_promedio)
             c.execute(query)
             conn.commit()
