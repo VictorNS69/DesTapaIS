@@ -356,8 +356,6 @@ def search_list(username, request):
     with sqlite3.connect(DB_PATH) as conn:
         c = conn.cursor()
         req = json.loads(request)
-        if req["category"] == "None":
-            return render_template('select_category.html', username=username)
 
         regex = req["text"]
         if req["category"] == "Usuario":
