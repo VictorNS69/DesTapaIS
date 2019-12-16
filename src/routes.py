@@ -155,7 +155,7 @@ def new_tasting(username):
             if image:
                 blob = image.read()
             else:
-                path = "./src/static/images/food_default.png"
+                path = "./src/static/images/default_food.png"
                 image = open(path, "rb")
                 blob = image.read()
             query = "SELECT nombre, Local_id FROM Degustacion"
