@@ -9,7 +9,6 @@
 </div>
 <html>
 
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
@@ -28,13 +27,13 @@
                 <script src="{{ url_for('static', filename='js/validatePw.js') }}"></script>
                 <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css"
                       rel="stylesheet">
-
+                <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
                 <textarea id="description" name="description" rows="4" cols="200" placeholder="Local Review"></textarea>
                 <p></p>
-                <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">
+                <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit" >
                     Register local
                 </button>
-                <div class="buttons"><a href="/{{username}}/new_tasting">Cancel</a></div>
+                <div class="buttons"><a href="javascript:history.back()">Cancel</a></div>
             </form>
         </div>
     </div>

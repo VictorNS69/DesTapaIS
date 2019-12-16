@@ -123,8 +123,27 @@ def homepage(username):
 
     except exceptions.UserNOtVerified:
         return render_template("no_verification.html", username=username)
-
-    return render_template('homepage.html', username=username)
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        query = "SELECT * FROM Usuario WHERE username = ? "
+        c.execute(query, (username,))
+        conn.commit()
+        result = c.fetchone()
+        image = b64encode(result[-4]).decode("utf-8")
+        query = "SELECT * FROM Degustacion INNER JOIN Valoracion ON Valoracion.Degustacion_id=Degustacion.id " \
+                "ORDER BY Valoracion.valor LIMIT 4"
+        c.execute(query)
+        degustaciones = c.fetchall()
+        query = "SELECT * FROM Degustacion INNER JOIN Valoracion ON Valoracion.Degustacion_id=Degustacion.id " \
+                "ORDER BY Valoracion.valor DESC LIMIT 4"
+        c.execute(query)
+        mvtastings = c.fetchall()
+        query = "SELECT * FROM Local LIMIT 4"
+        c.execute(query)
+        locals = c.fetchall()
+    return render_template('homepage.html', username=username, user=(result, image), tastings=degustaciones,
+                           most_valued_tastings=mvtastings, locals=locals)
 
 
 @app.route('/<string:username>/new_local',  methods=['GET', 'POST'])
@@ -150,7 +169,7 @@ def new_local(username):
             try:
                 c.execute(query, data_tuple)
                 conn.commit()
-                return redirect(url_for('new_tasting', username=username))
+                return redirect(url_for('homepage', username=username))
             except sqlite3.IntegrityError as e:
                 return render_template('local_already_exists.html', username=username)
 
@@ -414,6 +433,25 @@ def most_valued_tastings(username):
         return render_template('most_valued_tastings.html', username=username, degustaciones=degustaciones, foto=images)
 
 
+@app.route('/<string:username>/locals', methods=['GET'])
+def locals(username):
+    try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
+    with sqlite3.connect(DB_PATH) as conn:
+        conn.row_factory = sqlite3.Row
+        c = conn.cursor()
+        query = "SELECT * FROM Local"
+        c.execute(query)
+        locals = c.fetchall()
+        return render_template('locals.html', username=username, locals=locals)
+
+
 # Error definition
 @app.errorhandler(404)
 def page_not_found(error):
@@ -422,4 +460,5 @@ def page_not_found(error):
 
 @app.errorhandler(Exception)
 def exception_handler(error):
+    print(error)
     return render_template('something_broke.html')

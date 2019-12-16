@@ -52,3 +52,5 @@ Tan solo corre el archivo `run_app.sh` desde la carpeta raiz:
 - [Andrea Velarde](https://github.com/AndreaVentur10)
 - [Yanran Chen](https://github.com/YanranCW)
 - [Alejandro Senovilla](https://github.com/Alexsente)
+## Licencia
+[GNU General Public License v3.0](LICENSE)
