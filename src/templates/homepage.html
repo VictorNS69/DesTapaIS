@@ -40,17 +40,17 @@
             Contenido1
         </div>
         <div class="content-2">
-            <center><strong><u><tt>Here you can see a summary of your profile</tt></u></strong> <br></center>
+            <strong><u><tt>Here you can see a summary of your profile</tt></u></strong> <br>
             <strong>Username: </strong>{{user[0]["username"]}}<br>
             <strong>Name:</strong> {{user[0]["nombre"]}}<br>
-            <strong>Surname:</strong> {{user[0]["apellido"]}}<br>
+            <strong>Surname:</strong> {{user[0]["apellidos"]}}<br>
             <strong>email: </strong>{{user[0]["email"]}}<br><br>
             <img alt="Profile pic" src="data:;base64,{{ user[1] }}" class="img-square img-responsive" height="350" width="350">
             <br><br>
             <a class="btn btn-primary btn-lg" href="profile" role="button" >Profile</a>
         </div>
         <div class="content-3">
-            <center><strong><u><tt>Here you can see 5 tastings</tt></u></strong> <br></center>
+            <strong><u><tt>Here you can see 5 tastings</tt></u></strong> <br>
             {% if not tastings %}
             There isn't any tasting yet!<br>
             {% endif %}
@@ -68,7 +68,7 @@
             Contenido4
         </div>
         <div class="content-5">
-            <center><strong><u><tt>Here you can see the 5 most valued tastings</tt></u></strong> <br></center>
+            <strong><u><tt>Here you can see the 5 most valued tastings</tt></u></strong> <br>
             {% if not most_valued_tastings %}
             There isn't any tasting yet!<br>
             {% endif %}
@@ -86,7 +86,7 @@
             Contenido6
         </div>
         <div class="content-7">
-            <center><strong><u><tt>Here you can see 5 locals</tt></u></strong><br></center>
+            <strong><u><tt>Here you can see 5 locals</tt></u></strong><br>
             {% if not locals %}
             There isn't any local yet!<br>
             {% endif %}
