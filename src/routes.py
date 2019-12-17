@@ -88,7 +88,7 @@ def sign_in():
                     return render_template('verify_yourself.html', username=details["username"])
 
                 except sqlite3.IntegrityError as e:
-                    return render_template('error_sign_in.html', name=details["username"], email=details["email"])
+                    return render_template('error_sign_in.html', username=details["username"], email=details["email"])
                 except sqlite3.OperationalError as e:
                     return "Error 503 Service Unavailable.\nPlease try again later"
 
