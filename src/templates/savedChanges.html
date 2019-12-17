@@ -1,0 +1,19 @@
+<title>Success!</title>
+<head><script src="https://bootstrapcreative.com/wp-bc/wp-content/themes/wp-bootstrap/codepen/bootstrapcreative.js?v=7"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    <link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+</head>
+<link rel="stylesheet" href="{{ url_for('static', filename='css/center2.css') }}">
+
+<div class="jumbotron text-center" align="center">
+    <div class="center-screen">
+        <h1 class="display-3">Done!</h1>
+        <p class="lead">Your changes were saved <strong>{{username}}</strong></p>
+        <hr>
+        <p class="lead">
+            <a class="btn btn-primary btn" type="button" onclick="location.href='/{{ username }}/home';" role="button">Continue to homepage</a>
+        </p>
+    </div>
+</div>

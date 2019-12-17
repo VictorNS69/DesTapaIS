@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 
-	<title>User Not Found</title>
+	<title>Oops</title>
 
 	<!-- Google font -->
 	<link href="https://fonts.googleapis.com/css?family=Raleway:400,700" rel="stylesheet">
@@ -29,10 +29,9 @@
 			<div class="notfound-404">
 				<h2>:(</h2>
 			</div>
-			<h2>User not found</h2>
-			<p>This user is not in our system</p>
-			<a href="/sign_in">Sign in</a>
-            <a href="/login">Login</a>
+			<h2>User already exists</h2>
+			<p>The user {{new_username}} already exists</p>
+			<a href="/{{old_username}}/edit_info">Return to edition</a>
 		</div>
 	</div>
 </body>

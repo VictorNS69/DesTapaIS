@@ -1,59 +1,103 @@
-<link href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
-<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+{% extends "base.html" %}
+{% block navbar %}
+{{super()}}
+<div style="visibility: hidden">
+    {% block user %}{{username}}{% endblock %}
+    {% block user2 %}{{username}}{% endblock %}
+    {% block user3 %}{{username}}{% endblock %}
+    {% block user4 %}{{username}}{% endblock %}
+</div>
+<!DOCTYPE html>
+<title>Edit Profile</title>
+<head>
+    <script src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../static/css/edit_info.css">
+    <script>
+        function selectCountry() {
+            document.getElementById("country").value = "{{data.pais}}";
+        }
+    </script>
+</head>
 
-<!------ Include the above in your HEAD tag ---------->
-<title>Sign up</title>
+<body>
 
-<div class="container">
-    <img src="{{ url_for('static', filename='images/Logo_DesTapaIS_fondo.png') }}" alt="DesTapaIS Logo" height="300"
-        width="300" />
-    <div class="row">
-        <div class="col-xs-12 col-sm-12 col-md-4 well well-sm">
-            <legend align="center">Sign up!!</legend>
+    <div class="form_box">
+        <form method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="id" value="{{user_id}}">
+            <input type="hidden" name="original_username" value="{{data.username}}">
+            <input type="hidden" name="original_email" value="{{data.email}}">
+            <div class="row" align="center">
+                <img alt="User Pic" src="data:;base64,{{ image }}" id="profile-image1"
+                    class="img-circle img-responsive">
 
-            <form method="POST" enctype="multipart/form-data">
-                <input class="form-control" name="username" placeholder="Your Username" type="text" required
-                    autofocus />
-                <input class="form-control" name="firstname" placeholder="First Name" type="text" />
-                <input class="form-control" name="lastname" placeholder="Last Name" type="text" />
-                <input class="form-control" name="email" placeholder="Your Email" type="email" required />
-                <input class="form-control" id="password" name="password" placeholder="New Password" type="password"
-                    required />
-                <input class="form-control" id="confirm_password" name="confirm_password" placeholder="Confirm Password"
-                    type="password" required />
-                <script src="{{ url_for('static', filename='js/validatePw.js') }}"></script>
+                <input id="profile-image-upload" class="hidden" type="file" onchange="readURL(this);" name="image"
+                    accept="image/*">
+                <!--Upload Image Js And Css-->
 
-                <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css"
-                    rel="stylesheet">
-                <link rel="stylesheet" type="text/css" media="screen"
-                    href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+            </div>
+            <div class="row">
+                <label for="username"> Username: </label>
+                <input type="text" id="username" name="username" value={{data.username}} required>
+            </div>
+            <div class="row">
+                <label for="name"> First name: </label>
+                <input type="text" id="name" name="firstname" value="{{data.nombre}}">
+            </div>
+            <div class="row">
+                <label for="last_name"> Last name: </label>
+                <input type="text" id="last_name" name="lastname" value={{data.apellidos}}>
+            </div>
+            <div class="row">
+                <label for="email"> Email: </label>
+                <input type="email" id="email" name="email" value={{data.email}} required>
+            </div>
+            <div class="row" oninput="showConfirm()">
+                <label for="password"> New password: </label>
+                <input type="password" id="password" name="password">
+            </div>
+            <div class="row" style="display: none;" id="confirm_password_row">
+                <label for="confirm_password"> Confirm new password: </label>
+                <input type="password" id="confirm_password" name="confirm_password">
+            </div>
+            <script src="{{ url_for('static', filename='js/validatePw.js') }}"></script>
+            <div class="row">
+                <label for="description"> Description: </label>
+                <textarea class="text_area" type="text" id="description"
+                    name="description">{{data.descripcion}}</textarea>
+            </div>
 
-                <div id="datetimepicker" class="input-append date" aria-required="true">
-                    <input type="text" id="date" name="date" required placeholder="Select your birth date" />
-                    <span class="add-on">
-                        <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
-                    </span>
-                </div>
-                <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js">
+            <link href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/css/bootstrap-combined.min.css"
+                rel="stylesheet">
+            <link rel="stylesheet" type="text/css" media="screen"
+                href="http://tarruda.github.com/bootstrap-datetimepicker/assets/css/bootstrap-datetimepicker.min.css">
+            <div class="row" id="datetimepicker" class="input-append date" aria-required="true">
+                <label for="description"> Birthday: </label>
+                <input type="text" id="date" name="date" required value={{data.fecha_nacimiento}} />
+                <span class="add-on">
+                    <i data-time-icon="icon-time" data-date-icon="icon-calendar"></i>
+                </span>
+            </div>
+            <script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js">
+            </script>
+            <script type="text/javascript"
+                src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js">
                 </script>
-                <script type="text/javascript"
-                    src="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.2.2/js/bootstrap.min.js">
-                    </script>
-                <script type="text/javascript"
-                    src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
-                    </script>
-                <script type="text/javascript"
-                    src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-SP.js">
-                    </script>
-                <script type="text/javascript">
-                    $('#datetimepicker').datetimepicker({
-                        format: 'yyyy/MM/dd',
-                        language: 'pt-SP'
-                    });
+            <script type="text/javascript"
+                src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.min.js">
                 </script>
+            <script type="text/javascript"
+                src="http://tarruda.github.com/bootstrap-datetimepicker/assets/js/bootstrap-datetimepicker.pt-SP.js">
+                </script>
+            <script type="text/javascript">
+                $('#datetimepicker').datetimepicker({
+                    format: 'yyyy/MM/dd',
+                    language: 'pt-SP'
+                });
+            </script>
+            <div class="row">
+                <label for="description"> Country: </label>
                 <select id="country" name="country">
-                    <option value="None" selected>Select your country</option>
                     <option value="Afganistan">Afghanistan</option>
                     <option value="Albania">Albania</option>
                     <option value="Algeria">Algeria</option>
@@ -301,9 +345,10 @@
                     <option value="Zambia">Zambia</option>
                     <option value="Zimbabwe">Zimbabwe</option>
                 </select>
-                <p></p>
+            </div>
+            <div class="row">
                 <label class="radio-inline">
-                    <input checked type="radio" name="sex" id="sex0" value="None" />
+                    <input type="radio" name="sex" id="sex0" value="None" />
                     Other/Prefer not to say it
                 </label>
                 <label class="radio-inline">
@@ -314,31 +359,59 @@
                     <input type="radio" name="sex" id="sex2" value="female" />
                     Female
                 </label>
-                <p></p>
-                <textarea id="description" name="description" rows="4" cols="200"
-                    placeholder="Write about yourself"></textarea>
-                <p></p>
-
-                <div class="form-group">
-                    <label>Select image</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="image" id="image" accept="image/*">
-                        <label class="custom-file-label" for="image"></label>
-                    </div>
-                </div>
-                <button class="btn btn-lg btn-primary btn-block" type="submit" name="submit">
-                    Sign up
-                </button>
-                <div class="buttons"><a href="/login">I have an account already</a></div>
-            </form>
-        </div>
+            </div>
+            <div class="form-group">
+                <button class="cancel" type="button" onclick="location.href='/{{ username }}/profile';">Cancel</button>
+                <button class="accept" type="submit">Save</button>
+            </div>
+        </form>
     </div>
-</div>
-<style>
-    body {
-        background-image: url("{{ url_for('static', filename='images/wallpaper_spag.jpg') }}");
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
+    <script>selectCountry()</script>
+</body>
+
+<script>
+    function showConfirm() {
+        var confirm = document.getElementById("confirm_password_row");
+        var password = document.getElementById("password");
+        if (!password.value) {
+            confirm.style.display = "none";
+        } else {
+            if (confirm.style.display === "none") {
+                confirm.style.display = "block";
+            }
+        }
     }
-</style>
+</script>
+
+<script>
+    $(function () {
+        $('#profile-image1').on('click', function () {
+            $('#profile-image-upload').click();
+        });
+    });
+
+
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+                $('#profile-image1')
+                    .attr('src', e.target.result)
+            };
+
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    window.onload = function selectSex() {
+        var radiobtns = document.getElementsByName("sex");
+        for (var x = 0; x < radiobtns.length; x++)
+            if (radiobtns[x].value == "{{data.genero}}")
+                radiobtns[x].checked = true;
+    }
+</script>
+
+
+</html>
+{% endblock %}

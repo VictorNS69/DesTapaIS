@@ -1,4 +1,6 @@
-import sqlite3, datetime, base64
+import sqlite3
+import datetime
+import base64
 from src import app, DB_PATH, functions, exceptions
 from flask import render_template, request, redirect, url_for, json
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -15,9 +17,11 @@ def login():
     if request.method == "POST":
         with sqlite3.connect(DB_PATH) as conn:
             c = conn.cursor()
-            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+            c.execute(
+                '''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
             details = request.form
-            query = "SELECT * FROM Usuario WHERE username='{}'".format(details["username"])
+            query = "SELECT * FROM Usuario WHERE username='{}'".format(
+                details["username"])
             try:
                 c.execute(query)
                 result = c.fetchone()
@@ -34,7 +38,8 @@ def login():
                     return render_template("wrong_pw.html")
 
             except sqlite3.IntegrityError as e:
-                return e  # render_template('error_sign_in.html', name=details["username"], email=details["email"])
+                # render_template('error_sign_in.html', name=details["username"], email=details["email"])
+                return e
             except sqlite3.OperationalError as e:
                 return e  # "Error 503 Service Unavailable.\nPlease try again later"
 
@@ -46,9 +51,11 @@ def sign_in():
     if request.method == "POST":
         with sqlite3.connect(DB_PATH) as conn:
             c = conn.cursor()
-            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+            c.execute(
+                '''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
             details = request.form
-            date = functions.date_validator(str(details["date"]).replace("/", "-"))
+            date = functions.date_validator(
+                str(details["date"]).replace("/", "-"))
             if not date:
                 return render_template('age_error.html')
             else:
@@ -60,7 +67,8 @@ def sign_in():
                         "'apellidos', 'pais', 'descripcion', 'genero', 'verificado', 'foto') VALUES (?, ?, ?, ?, ?, " \
                         "?, ? , ?, ?, ?, ?)"
                 data_tuple = (details["username"], generate_password_hash(details["password"]), details["email"],
-                              str(details["date"]), details["firstname"], details["lastname"], details["country"],
+                              str(details["date"]
+                                  ), details["firstname"], details["lastname"], details["country"],
                               details["description"], details["sex"], verified, blob)
                 try:
                     c.execute(query, data_tuple)
@@ -69,16 +77,18 @@ def sign_in():
                     to_address = details["email"]
                     subject = "DesTapaIS verification mail"
                     message = "Hi! "+details["username"]+" This is your verification link: " \
-                              "http://127.0.0.1:5000/"+details["username"]+"/verification"
+                              "http://127.0.0.1:5000/" + \
+                        details["username"]+"/verification"
                     username = "destapais.grupo1"
                     psw = "grupo1IS2"
 
-                    functions.send_email(from_address, [to_address], "", subject, message, username, psw)
+                    functions.send_email(
+                        from_address, [to_address], "", subject, message, username, psw)
 
                     return render_template('verify_yourself.html', username=details["username"])
 
                 except sqlite3.IntegrityError as e:
-                    return render_template('error_sign_in.html', name=details["username"], email=details["email"])
+                    return render_template('error_sign_in.html', username=details["username"], email=details["email"])
                 except sqlite3.OperationalError as e:
                     return "Error 503 Service Unavailable.\nPlease try again later"
 
@@ -101,7 +111,8 @@ def profile(username):
         with sqlite3.connect(DB_PATH) as conn:
             conn.row_factory = sqlite3.Row
             c = conn.cursor()
-            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+            c.execute(
+                '''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
             query = "SELECT * FROM Usuario WHERE username = ? "
             c.execute(query, (username,))
             conn.commit()
@@ -112,6 +123,97 @@ def profile(username):
         return "Error 503 Service Unavailable.\nPlease try again later"
 
     return render_template('userprofile.html', username=username, result=result, image=image)
+
+@app.route('/<username>/edit_info', methods=['GET', 'POST'])
+def edit_info(username):
+    try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
+
+    if request.method == 'GET':
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            query = "SELECT * FROM 'Usuario' WHERE username=?"
+            c.execute(query, [username])
+            data = c.fetchone()
+            image = b64encode(data["foto"]).decode("utf-8")
+            username = data["username"]
+            user_id = data["id"]
+            return render_template('edit_info.html', data=data, image=image, username=username, user_id=user_id)
+    elif request.method == 'POST':
+        with sqlite3.connect(DB_PATH) as conn:
+            conn.row_factory = sqlite3.Row
+            c = conn.cursor()
+            data = request.form
+            if(data["username"] != data["original_username"]):
+                query = "SELECT * FROM 'Usuario' WHERE username='{}'".format(
+                    data["username"])
+                c.execute(query)
+                res = c.fetchone()
+                if(res):
+                    return render_template('user_already_exists.html', old_username=data["original_username"], new_username=data["username"])
+            if(data["email"] != data["original_email"]):
+                query = "SELECT * FROM 'Usuario' WHERE email='{}'".format(
+                    data["email"])
+                c.execute(query)
+                res = c.fetchone()
+                if(res):
+                    return render_template('email_already_in_use.html', email=data["email"], username=data["username"])
+            date = functions.date_validator(
+                str(data["date"]).replace("/", "-"))
+            if not date:
+                return render_template('age_error.html')
+            else:
+                user_id = data["id"]
+                image = request.files["image"]
+                blob = None
+                if image:
+                    blob = image.read()
+                    if data["password"]:
+                        query = """UPDATE Usuario SET username=?, contrasena=?, email= ?, fecha_nacimiento=?, nombre=?, 
+                        apellidos=?, pais=?, descripcion=?, genero=?, foto=? WHERE id=?;"""
+
+                        data_tuple = (data["username"], generate_password_hash(data["password"]), data["email"],
+                                      str(data["date"]), data["firstname"], data["lastname"], data["country"],
+                                      data["description"], data["sex"], blob, user_id)
+                    else:
+                        query = """UPDATE Usuario SET username=?, email= ?, fecha_nacimiento=?, nombre=?, 
+                        apellidos=?, pais=?, descripcion=?, genero=?, foto=? WHERE id=?;"""
+
+                        data_tuple = (data["username"], data["email"],
+                                      str(data["date"]), data["firstname"], data["lastname"], data["country"],
+                                      data["description"], data["sex"], blob, user_id)
+                else:
+                    if data["password"]:
+                        query = """UPDATE Usuario SET username=?, contrasena=?, email= ?, fecha_nacimiento=?, nombre=?, 
+                        apellidos=?, pais=?, descripcion=?, genero=? WHERE id=?;"""
+
+                        data_tuple = (data["username"], generate_password_hash(data["password"]), data["email"],
+                                      str(data["date"]), data["firstname"], data["lastname"], data["country"],
+                                      data["description"], data["sex"], user_id)
+                    else:
+                        query = """UPDATE Usuario SET username = ?, email= ?, fecha_nacimiento=?, nombre = ?, 
+                        apellidos=?, pais=?, descripcion=?, genero=? WHERE id=?;"""
+
+                        data_tuple = (data["username"], data["email"],
+                                      str(data["date"]), data["firstname"], data["lastname"], data["country"],
+                                      data["description"], data["sex"], user_id)
+
+                try:
+                    c.execute(query, data_tuple)
+                    conn.commit()
+                    return render_template('savedChanges.html', username=data["username"])
+                except sqlite3.IntegrityError as e:
+                    print("Error:", e)
+                    return render_template('error_sign_in.html', username=data["username"], email=data["email"])
+                except sqlite3.OperationalError as e:
+                    print("Error:", e)
+                    return "Error 503 Service Unavailable.\nPlease try again later"
 
 
 @app.route('/<string:username>/home')
@@ -159,13 +261,16 @@ def new_local(username):
     if request.method == "POST":
         with sqlite3.connect(DB_PATH) as conn:
             c = conn.cursor()
-            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+            c.execute(
+                '''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
             details = request.form
-            query = "SELECT id FROM Usuario WHERE username='{}'".format(username)
+            query = "SELECT id FROM Usuario WHERE username='{}'".format(
+                username)
             c.execute(query)
             id_user = c.fetchone()[0]
             query = "INSERT INTO Local (nombre, direccion, resena, Usuario_id) VALUES (?, ?, ?, ?)"
-            data_tuple = (details["name"], details["address"], details["description"], id_user)
+            data_tuple = (details["name"], details["address"],
+                          details["description"], id_user)
             try:
                 c.execute(query, data_tuple)
                 conn.commit()
@@ -202,55 +307,60 @@ def new_tasting(username):
     with sqlite3.connect(DB_PATH) as conn:
         c = conn.cursor()
     if request.method == 'POST':
-            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
-            details = request.form
-            image = request.files["image"]
-            if image:
-                blob = image.read()
-            else:
-                path = "./src/static/images/default_food.png"
-                image = open(path, "rb")
-                blob = image.read()
-            query = "SELECT nombre, Local_id FROM Degustacion"
-            c.execute(query)
-            tuplas = c.fetchall()
-            query = "SELECT id FROM Local WHERE nombre='{}'".format(details["local"])
-            c.execute(query)
-            id_local = c.fetchone()[0]
-            for tupla in tuplas:
-                if (tupla[0] == details["name"]) and (tupla[1] == id_local):
-                    return render_template('deg_already_exists.html', username=username)
-            query = "SELECT id FROM Usuario WHERE username='{}'".format(username)
-            c.execute(query)
-            id_user = c.fetchone()[0]
-            query = "INSERT INTO 'Degustacion' ('valoracion_promedio', 'nombre', 'descripcion', 'fecha'," \
-                    "'tipo_comida', 'procedencia', 'tamaño', 'foto', 'calificador_gusto', 'Usuario_id'," \
-                    "'Local_id')" \
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT id FROM Usuario WHERE nombre='{}'), "\
-                    + str(id_local) + ")".format(username)
-            data_tuple = (0, details["name"], details["description"], details["date"], details["type"],
-                          details["origin"], details["size"], blob, details["taste"])
-            c.execute(query, data_tuple)
-            conn.commit()
-            query = "SELECT id FROM Degustacion WHERE nombre='{}'".format(details["name"])
-            c.execute(query)
-            id_deg = c.fetchone()[0]
-            query = "INSERT INTO 'Valoracion' ('Usuario_id', 'Degustacion_id', 'valor') VALUES (?, ?, ?)"
-            data_tuple = (id_user, id_deg, details["rate"])
-            c.execute(query, data_tuple)
-            conn.commit()
-            query = "SELECT valor FROM Valoracion WHERE Degustacion_id='{}'".format(id_deg)
-            c.execute(query)
-            valores = c.fetchall()
-            suma = 0
-            for valor in valores:
-                suma += valor[0]
-            valor_promedio = suma / len(valores)
-            valor_promedio = '%.3f'%valor_promedio
-            query = "UPDATE 'Degustacion' SET 'valoracion_promedio'='{}'".format(valor_promedio)
-            c.execute(query)
-            conn.commit()
-            return render_template('ok_tasting.html', username=username)
+        c.execute(
+            '''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+        details = request.form
+        image = request.files["image"]
+        if image:
+            blob = image.read()
+        else:
+            path = "./src/static/images/default_food.png"
+            image = open(path, "rb")
+            blob = image.read()
+        query = "SELECT nombre, Local_id FROM Degustacion"
+        c.execute(query)
+        tuplas = c.fetchall()
+        query = "SELECT id FROM Local WHERE nombre='{}'".format(
+            details["local"])
+        c.execute(query)
+        id_local = c.fetchone()[0]
+        for tupla in tuplas:
+            if (tupla[0] == details["name"]) and (tupla[1] == id_local):
+                return render_template('deg_already_exists.html', username=username)
+        query = "SELECT id FROM Usuario WHERE username='{}'".format(username)
+        c.execute(query)
+        id_user = c.fetchone()[0]
+        query = "INSERT INTO 'Degustacion' ('valoracion_promedio', 'nombre', 'descripcion', 'fecha'," \
+                "'tipo_comida', 'procedencia', 'tamaño', 'foto', 'calificador_gusto', 'Usuario_id'," \
+                "'Local_id')" \
+                "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, (SELECT id FROM Usuario WHERE nombre='{}'), "\
+                + str(id_local) + ")".format(username)
+        data_tuple = (0, details["name"], details["description"], details["date"], details["type"],
+                      details["origin"], details["size"], blob, details["taste"])
+        c.execute(query, data_tuple)
+        conn.commit()
+        query = "SELECT id FROM Degustacion WHERE nombre='{}'".format(
+            details["name"])
+        c.execute(query)
+        id_deg = c.fetchone()[0]
+        query = "INSERT INTO 'Valoracion' ('Usuario_id', 'Degustacion_id', 'valor') VALUES (?, ?, ?)"
+        data_tuple = (id_user, id_deg, details["rate"])
+        c.execute(query, data_tuple)
+        conn.commit()
+        query = "SELECT valor FROM Valoracion WHERE Degustacion_id='{}'".format(
+            id_deg)
+        c.execute(query)
+        valores = c.fetchall()
+        suma = 0
+        for valor in valores:
+            suma += valor[0]
+        valor_promedio = suma / len(valores)
+        valor_promedio = '%.3f' % valor_promedio
+        query = "UPDATE 'Degustacion' SET 'valoracion_promedio'='{}'".format(
+            valor_promedio)
+        c.execute(query)
+        conn.commit()
+        return render_template('ok_tasting.html', username=username)
 
     query = "SELECT nombre FROM Local"
     c.execute(query)
@@ -260,7 +370,7 @@ def new_tasting(username):
         locales.append(local[0])
     return render_template('new_tasting.html', username=username, locales=locales)
 
-  
+
 @app.route('/<username>/tastings/<id_tasting>', methods=['GET', 'POST'])
 def tasting(username, id_tasting):
     try:
@@ -281,11 +391,13 @@ def tasting(username, id_tasting):
                 conn.commit()
                 id_user = c.fetchone()[0]
                 query = "INSERT INTO 'Favorito_degustacion' ('Usuario_id', 'Degustacion_id', 'fecha') VALUES (?, ?, ?)"
-                data_tuple = (id_user, id_tasting, str(datetime.datetime.now()))
+                data_tuple = (id_user, id_tasting,
+                              str(datetime.datetime.now()))
                 c.execute(query, data_tuple)
                 conn.commit()
                 return redirect(url_for('homepage', username=username))
-            c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+            c.execute(
+                '''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
             query = "SELECT * FROM Degustacion WHERE id = ? "
             c.execute(query, (id_tasting,))
             conn.commit()
@@ -293,7 +405,7 @@ def tasting(username, id_tasting):
             query = "SELECT nombre FROM Local WHERE id = ?"
             c.execute(query, (result["Local_id"],))
             local = c.fetchone()[0]
-            image= base64.b64encode(result["foto"]).decode("utf-8")
+            image = base64.b64encode(result["foto"]).decode("utf-8")
 
     except sqlite3.OperationalError as e:
         return "Error 503 Service Unavailable.\nPlease try again later"
@@ -324,7 +436,8 @@ def local(username, id_local):
             c.execute(query, data_tuple)
             conn.commit()
             return redirect(url_for('homepage', username=username))
-        c.execute('''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
+        c.execute(
+            '''PRAGMA foreign_keys = ON;''')  # Parece que no es necesaria esta linea
         query = "SELECT * FROM Local WHERE id = ? "
         c.execute(query, (id_local,))
         conn.commit()
@@ -333,7 +446,7 @@ def local(username, id_local):
         return "Error 503 Service Unavailable.\nPlease try again later"
     return render_template('local.html', username=username, result=result)
 
-  
+
 @app.route('/<string:username>/search', methods=['GET', 'POST'])
 def search(username):
     try:
@@ -375,7 +488,8 @@ def search_list(username, request):
         elif req["category"] == "Degustacion":
             query = "SELECT * FROM Degustacion WHERE nombre LIKE '%" + regex + "%' OR descripcion LIKE '%" + regex +\
                 "%' OR tipo_comida LIKE '%" + regex + "%' OR procedencia LIKE '%" + regex +\
-                "%' OR valoracion_promedio LIKE '%" + regex + "%' OR calificador_gusto LIKE '%" + regex + "%';"
+                "%' OR valoracion_promedio LIKE '%" + regex + \
+                    "%' OR calificador_gusto LIKE '%" + regex + "%';"
 
         c.execute(query)
         values = c.fetchall()
@@ -410,7 +524,8 @@ def help(username):
 def verification(username):
     with sqlite3.connect(DB_PATH) as conn:
         c = conn.cursor()
-        query = "UPDATE Usuario SET verificado=1 WHERE username='{}';".format(username)
+        query = "UPDATE Usuario SET verificado=1 WHERE username='{}';".format(
+            username)
         c.execute(query)
         c.fetchone()
     return redirect(url_for('login', username=username))
@@ -433,7 +548,8 @@ def most_valued_tastings(username):
         c.execute(query)
         degustaciones = c.fetchall()
         images = []
-        [images.append(b64encode(d[-7]).decode("utf-8") if d[-7] else None) for d in degustaciones]
+        [images.append(b64encode(d[-7]).decode("utf-8") if d[-7] else None)
+         for d in degustaciones]
         return render_template('most_valued_tastings.html', username=username, degustaciones=degustaciones, foto=images)
 
 
