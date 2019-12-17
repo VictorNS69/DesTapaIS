@@ -126,6 +126,13 @@ def profile(username):
 
 @app.route('/<username>/edit_info', methods=['GET', 'POST'])
 def edit_info(username):
+    try:
+        functions.verified_user(DB_PATH, username)
+    except exceptions.UserNotExist:
+        return render_template("user_not_exist.html")
+
+    except exceptions.UserNOtVerified:
+        return render_template("no_verification.html", username=username)
 
     if request.method == 'GET':
         with sqlite3.connect(DB_PATH) as conn:
@@ -200,10 +207,10 @@ def edit_info(username):
                 try:
                     c.execute(query, data_tuple)
                     conn.commit()
-                    return render_template('savedChanges.html', name=data["username"])
+                    return render_template('savedChanges.html', username=data["username"])
                 except sqlite3.IntegrityError as e:
                     print("Error:", e)
-                    return render_template('error_sign_in.html', name=data["username"], email=data["email"])
+                    return render_template('error_sign_in.html', username=data["username"], email=data["email"])
                 except sqlite3.OperationalError as e:
                     print("Error:", e)
                     return "Error 503 Service Unavailable.\nPlease try again later"
